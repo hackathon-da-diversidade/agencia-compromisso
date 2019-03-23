@@ -6,4 +6,4 @@ init:
 	$(source_venv) pip install -r requirements.txt
 
 run: init
-	$(source_venv) FLASK_APP=app.py flask
+	$(source_venv) gunicorn app:app
