@@ -36,7 +36,7 @@ def create():
     telefone = requestData.get('telefone',None)
     endereco = requestData.get('endereco',None)
     responsavel_nome = requestData.get('responsavel_nome',None)
-    responsavel_nascimento = requestData.get('responsavel_nascimento',None)
+    responsavel_data_nascimento = requestData.get('responsavel_data_nascimento',None)
     responsavel_email = requestData.get('responsavel_email',None)
     responsavel_telefone = requestData.get('responsavel_telefone',None)
     genero = requestData.get('genero',None)
@@ -54,7 +54,7 @@ def create():
     observacoes = requestData.get('observacoes',None)
 
     mod = get_connection()['modelos']
-    result = Modelo(nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel_nascimento,\
+    result = Modelo(nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel_data_nascimento,\
                     responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                     medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes)
     mod.insert(result)

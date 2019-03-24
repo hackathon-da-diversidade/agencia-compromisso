@@ -5,7 +5,7 @@ class Modelo(dict):
     __delattr__ = dict.__delitem__
     __setattr__ = dict.__setitem__
 
-    def __init__(self, nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel_nascimento,\
+    def __init__(self, nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel__data_nascimento,\
                  responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                  medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes):
         self.nome = nome
@@ -14,7 +14,7 @@ class Modelo(dict):
         self.telefone = telefone
         self.endereco = endereco
         self.responsavel_nome = responsavel_nome
-        self.responsavel_nascimento = responsavel_nascimento
+        self.responsavel_data_nascimento = responsavel_data_nascimento
         self.responsavel_email = responsavel_email
         self.responsavel_telefone = responsavel_telefone
         self.genero = genero
@@ -30,8 +30,3 @@ class Modelo(dict):
         self.medida_cintura = medida_cintura
         self.medida_quadril = medida_quadril
         self.observacoes = observacoes
-
-
-# class Cadastro(Modelo):
-#   def __init__(self):
-#     super().__init__()
