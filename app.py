@@ -4,6 +4,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask import Response
+from flask_cors import CORS
 import json
 from bson.json_util import default
 from list_function import list_all
@@ -11,6 +12,7 @@ from cadastro import Modelo
 from db import get_connection
 
 app = Flask(__name__)
+cors = CORS(app)
 MONGODB_URL = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
 
 @app.route('/')
