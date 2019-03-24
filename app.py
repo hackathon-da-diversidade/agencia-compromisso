@@ -12,6 +12,7 @@ from cadastro import Modelo
 from db import get_connection
 
 app = Flask(__name__)
+MONGODB_URL = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
 
 @app.route('/')
 def hello_world():
@@ -22,6 +23,7 @@ def hello_world():
 def list():
     if request.method == 'GET':
         # Apenas lista o conteúdo
+    return Response(json.dumps(result, default=default), status=2
         pass
     elif request.method == 'POST':
         # Filtra o conteúdo antes de listar
