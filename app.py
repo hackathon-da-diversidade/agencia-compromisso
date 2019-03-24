@@ -4,9 +4,11 @@ from flask import Flask
 from flask import jsonify
 from flask import request, Response
 from list_function import list_all
+from cadastro import Modelo, Cadastro
+
 app = Flask(__name__)
 
-MONGODB_URL = os.environ.get('MONGODB_URL', 'mongodb://localhost:27017')
+MONGODB_URL = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
 
 def get_connection():
   return MongoClient(MONGODB_URL)["agcompromisso"]
@@ -28,6 +30,7 @@ def list():
 @app.route('/create', methods=['POST'])
 def create():
     pass
+
 
 if __name__ == '__main__':
     app.run()
