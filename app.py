@@ -2,7 +2,8 @@ import os
 from pymongo import MongoClient
 from flask import Flask
 from flask import jsonify
-from flask import request
+from flask import request, Response
+from list_function import list_all
 app = Flask(__name__)
 
 MONGODB_URL = os.environ.get('MONGODB_URL', 'mongodb://localhost:27017')
@@ -18,7 +19,7 @@ def hello_world():
 @app.route('/list', methods=['GET', 'POST'])
 def list():
     if request.method == 'GET':
-        # Apenas lista o conteúdo
+        return Response(list_all(), status=201, mimetype='application/json')
         pass
     elif request.method == 'POST':
         # Filtra o conteúdo antes de listar
