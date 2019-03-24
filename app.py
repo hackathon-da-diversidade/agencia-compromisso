@@ -32,7 +32,10 @@ def list():
 @app.route('/create', methods=['POST'])
 def create():
     #requestData = request.get_json()
-    requestData = request.form.to_dict(flat=False)
+    requestData = {
+        key: value[0] if len(value) == 1 else value
+        for key, value in request.form.copy().lists()
+    }
     nome = requestData.get('nome',None)
     data_nascimento = requestData.get('data_nascimento',None)
     email = requestData.get('email',None)
