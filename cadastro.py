@@ -5,7 +5,7 @@ class Modelo(dict):
     __delattr__ = dict.__delitem__
     __setattr__ = dict.__setitem__
 
-    def __init__(self, nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel__data_nascimento,\
+    def __init__(self, nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel_data_nascimento,\
                  responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                  medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes):
         self.nome = nome
