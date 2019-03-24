@@ -1,16 +1,22 @@
-from .db import get_connection
 from bson import ObjectId
 
+class Modelo(dict):
+    __getattr__ = dict.get
+    __delattr__ = dict.__delitem__
+    __setattr__ = dict.__setitem__
 
-class Modelo():
-    """docstring for Modelo."""
-    def __init__(self, nome, data_nascimento, email, telefone, endereco, genero, escolaridade, ocupacao, moradia, \
-                 moradores, filhos, etnia, renda):
+    def __init__(self, nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel_nascimento,\
+                 responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
+                 medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes):
         self.nome = nome
         self.data_nascimento = data_nascimento
         self.email = email
         self.telefone = telefone
         self.endereco = endereco
+        self.responsavel_nome = responsavel_nome
+        self.responsavel_nascimento = responsavel_nascimento
+        self.responsavel_email = responsavel_email
+        self.responsavel_telefone = responsavel_telefone
         self.genero = genero
         self.escolaridade = escolaridade
         self.ocupacao = ocupacao
@@ -19,31 +25,13 @@ class Modelo():
         self.filhos = filhos
         self.etnia = etnia
         self.renda = renda
+        self.medida_altura = medida_altura
+        self.medida_busto = medida_busto
+        self.medida_cintura = medida_cintura
+        self.medida_quadril = medida_quadril
+        self.observacoes = observacoes
 
-class Cadastro(Modelo):
-  collection = get_connection()['modelos']
 
-  def __init__(self):
-    super().__init__()
-
-  @staticmethod
-  def init_with_document(document):
-    _id = document.get('_id', None)
-    nome = document.get('nome', None)
-    data_nascimento = document.get('data_nascimento', None)
-    email = document.get('email', None)
-    telefone = document.get('telefone', None)
-    endereco = document.get('endereco', None)
-    genero = document.get('genero', None)
-    escolaridade = document.get('escolaridade', None)
-    ocupacao = document.get('ocupacao', None)
-    moradia = document.get('moradia', None)
-    moradores = document.get('moradores', None)
-    filhos = document.get('filhos', None)
-    etnia = document.get('etnia', None)
-    renda = document.get('renda', None)
-    result = Cadastro(nome=nome, data_nascimento=data_nascimento, email=email, telefone=telefone, endereco=endereco,\
-                    genero=genero, escolaridade=escolaridade, ocupacao=ocupacao, moradia=moradia, moradores=moradores,\
-                    filhos=filhos, etnia=etnia, renda=renda)
-    result._id = _id
-    return result
+# class Cadastro(Modelo):
+#   def __init__(self):
+#     super().__init__()
