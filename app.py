@@ -4,10 +4,9 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask import Response
-
 import json
 from bson.json_util import default
-
+from list_function import list_all
 from cadastro import Modelo
 from db import get_connection
 
@@ -22,8 +21,7 @@ def hello_world():
 @app.route('/list', methods=['GET', 'POST'])
 def list():
     if request.method == 'GET':
-        # Apenas lista o conteúdo
-    return Response(json.dumps(result, default=default), status=2
+        return Response(list_all(), status=201, mimetype='application/json')
         pass
     elif request.method == 'POST':
         # Filtra o conteúdo antes de listar
