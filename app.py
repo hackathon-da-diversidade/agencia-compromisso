@@ -29,6 +29,7 @@ def list():
 
 @app.route('/create', methods=['POST'])
 def create():
+    pass
 
 
 if __name__ == '__main__':
