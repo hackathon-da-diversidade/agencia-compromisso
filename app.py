@@ -29,7 +29,7 @@ def list():
         # Filtra o conteúdo antes de listar
         pass
 
-@app.route('/model/create', methods=['POST'])
+@app.route('/create', methods=['POST'])
 def create():
     #requestData = request.get_json()
     requestData = {
