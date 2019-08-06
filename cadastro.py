@@ -23,7 +23,7 @@ class Modelo(dict):
         self.responsavel_data_nascimento = responsavel_data_nascimento
         self.responsavel_email = responsavel_email
         self.responsavel_telefone = responsavel_telefone
-        self.genero = gener
+        self.genero = genero
         self.escolaridade = escolaridade
         self.ocupacao = ocupacao
         self.moradia = moradia
