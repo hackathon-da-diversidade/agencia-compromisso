@@ -18,7 +18,7 @@ MONGODB_URL = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
 @app.route('/')
 def hello_world():
     get_connection()
-    return jsonify(string_teste='Hello, World!')
+    return jsonify(string_teste='Agencia Compromisso!')
 
 @app.route('/list', methods=['GET', 'POST'])
 def list():
@@ -29,7 +29,7 @@ def list():
         # Filtra o conteúdo antes de listar
         pass
 
-@app.route('/create', methods=['POST'])
+@app.route('/model/create', methods=['POST'])
 def create():
     #requestData = request.get_json()
     requestData = {
@@ -40,7 +40,13 @@ def create():
     data_nascimento = requestData.get('data_nascimento',None)
     email = requestData.get('email',None)
     telefone = requestData.get('telefone',None)
-    endereco = requestData.get('endereco',None)
+    endereco_logradouro = requestData.get('endereco_logradouro', None)
+	endereco_numero = requestData.get('endereco_numero', None)
+	endereco_complemento = requestData.get('endereco_complemento', None)
+	endereco_bairro = requestData.get('endereco_bairro', None)
+	endereco_cidade = requestData.get('endereco_cidade', None)
+	endereco_estado = requestData.get('endereco_estado', None)
+	endereco_cep = requestData.get('endereco_cep', None)
     responsavel_nome = requestData.get('responsavel_nome',None)
     responsavel_data_nascimento = requestData.get('responsavel_data_nascimento',None)
     responsavel_email = requestData.get('responsavel_email',None)
@@ -60,8 +66,8 @@ def create():
     observacoes = requestData.get('observacoes',None)
 
     mod = get_connection()['modelos']
-    result = Modelo(nome, data_nascimento, email, telefone, endereco, responsavel_nome, responsavel_data_nascimento,\
-                    responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
+    result = Modelo(nome, data_nascimento, email, telefone, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep,\
+                    responsavel_nome, responsavel_data_nascimento,responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                     medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes)
     mod.insert(result)
     return Response(json.dumps(result, default=default), status=201, mimetype='application/json')
