@@ -6,7 +6,7 @@ class Modelo(dict):
     __setattr__ = dict.__setitem__
 
     def __init__(self, nome, data_nascimento, email, telefone, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, responsavel_nome, responsavel_nascimento,\
-                 responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
+                 responsavel_email, responsavel_telefone, genero, lgbtqia, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                  medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes):
         self.nome = nome
         self.data_nascimento = data_nascimento
@@ -24,6 +24,7 @@ class Modelo(dict):
         self.responsavel_email = responsavel_email
         self.responsavel_telefone = responsavel_telefone
         self.genero = genero
+        self.lgbtqia = lgbtqia
         self.escolaridade = escolaridade
         self.ocupacao = ocupacao
         self.moradia = moradia
