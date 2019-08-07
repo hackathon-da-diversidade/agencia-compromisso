@@ -43,7 +43,7 @@ def create():
 	endereco_estado = requestData.get('endereco_estado', None)
 	endereco_cep = requestData.get('endereco_cep', None)
     responsavel_nome = requestData.get('responsavel_nome',None)
-    responsavel_data_nascimento = requestData.get('responsavel_data_nascimento',None)
+    responsavel_nascimento = requestData.get('responsavel_nascimento',None)
     responsavel_email = requestData.get('responsavel_email',None)
     responsavel_telefone = requestData.get('responsavel_telefone',None)
     genero = requestData.get('genero',None)
@@ -62,7 +62,7 @@ def create():
 
     mod = get_connection()['modelos']
     result = Modelo(nome, data_nascimento, email, telefone, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep,\
-                    responsavel_nome, responsavel_data_nascimento,responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
+                    responsavel_nome, responsavel_ nascimento, responsavel_email, responsavel_telefone, genero, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                     medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes)
     mod.insert(result)
     return Response(json.dumps(result, default=default), status=201, mimetype='application/json')
