@@ -15,11 +15,6 @@ app = Flask(__name__)
 cors = CORS(app)
 MONGODB_URL = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
 
-@app.route('/')
-def hello_world():
-    get_connection()
-    return jsonify(string_teste='Agencia Compromisso!')
-
 @app.route('/list', methods=['GET', 'POST'])
 def list():
     if request.method == 'GET':
