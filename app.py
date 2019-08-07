@@ -36,12 +36,12 @@ def create():
     email = requestData.get('email',None)
     telefone = requestData.get('telefone',None)
     endereco_logradouro = requestData.get('endereco_logradouro', None)
-	endereco_numero = requestData.get('endereco_numero', None)
-	endereco_complemento = requestData.get('endereco_complemento', None)
-	endereco_bairro = requestData.get('endereco_bairro', None)
-	endereco_cidade = requestData.get('endereco_cidade', None)
-	endereco_estado = requestData.get('endereco_estado', None)
-	endereco_cep = requestData.get('endereco_cep', None)
+    endereco_numero = requestData.get('endereco_numero', None)
+    endereco_complemento = requestData.get('endereco_complemento', None)
+    endereco_bairro = requestData.get('endereco_bairro', None)
+    endereco_cidade = requestData.get('endereco_cidade', None)
+    endereco_estado = requestData.get('endereco_estado', None)
+    endereco_cep = requestData.get('endereco_cep', None)
     responsavel_nome = requestData.get('responsavel_nome',None)
     responsavel_nascimento = requestData.get('responsavel_nascimento',None)
     responsavel_email = requestData.get('responsavel_email',None)
@@ -63,7 +63,7 @@ def create():
 
     mod = get_connection()['modelos']
     result = Modelo(nome, data_nascimento, email, telefone, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep,\
-                    responsavel_nome, responsavel_ nascimento, responsavel_email, responsavel_telefone, genero, lgbtqia, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
+                    responsavel_nome, responsavel_nascimento, responsavel_email, responsavel_telefone, genero, lgbtqia, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                     medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes)
     mod.insert(result)
     return Response(json.dumps(result, default=default), status=201, mimetype='application/json')
