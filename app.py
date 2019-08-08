@@ -13,7 +13,6 @@ from db import get_connection
 
 app = Flask(__name__)
 cors = CORS(app)
-MONGODB_URL = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
 
 @app.route('/list', methods=['GET', 'POST'])
 def list():
