@@ -62,6 +62,7 @@ def create():
     observacoes = requestData.get('observacoes',None)
 
     mod = get_connection()['modelos']
+
     result = Modelo(nome, data_nascimento, email, telefone, endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep,\
                     responsavel_nome, responsavel_nascimento, responsavel_email, responsavel_telefone, genero, lgbtqia, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda,\
                     medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes)

@@ -20,7 +20,7 @@ class Modelo(dict):
         self.endereco_estado = endereco_estado
         self.endereco_cep = endereco_cep
         self.responsavel_nome = responsavel_nome
-        self.responsavel_data_nascimento = responsavel_data_nascimento
+        self.responsavel_nascimento = responsavel_nascimento
         self.responsavel_email = responsavel_email
         self.responsavel_telefone = responsavel_telefone
         self.genero = genero
