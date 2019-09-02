@@ -1,5 +1,6 @@
 import json
 from bson.json_util import default
+from bson.objectid import ObjectId
 from db import get_connection
 
 def list_all():
@@ -11,6 +12,16 @@ def list_all():
       lista_modelos.append(modelo)
 
   return json.dumps(lista_modelos, default=default)
+
+
+def get_model_by_id(id):
+  collection = 'modelos'
+  connection = get_connection()[collection]
+  modelo = connection.find_one({"_id": ObjectId(id)})
+  if modelo:
+    return json.dumps(modelo, default=default)
+
+  return None
 
 #def list_filter(arg1=None, arg2=None):
 #  database = get_connection()
