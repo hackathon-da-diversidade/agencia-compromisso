@@ -1,5 +1,3 @@
-from bson import ObjectId
-
 class Modelo(dict):
     __getattr__ = dict.get
     __delattr__ = dict.__delitem__

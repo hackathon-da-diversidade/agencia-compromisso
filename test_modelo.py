@@ -1,5 +1,5 @@
 from unittest import TestCase
-from cadastro import Modelo
+from modelo import Modelo
 
 class TestModelo(TestCase):
 
