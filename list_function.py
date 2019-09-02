@@ -1,29 +1,15 @@
-import os
-from pymongo import MongoClient
 import json
 from bson.json_util import default
-
-MONGODB_URL = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
-
-MONGODB_COLLECTION = os.environ.get('MONGODB_COLLECTION', 'agcompromisso')
-
-def get_connection():
-  return MongoClient(MONGODB_URL)[MONGODB_COLLECTION]
-
-
-def create_test():
-    database = get_connection()
-    modelos = database["modelos"]
-    modelos.insert({"string_teste":"Hello, World!", "genero": "f"})
-    modelos.insert({"string_teste":"Ola mundo", "genero": "m"})
-
+from db import get_connection
 
 def list_all():
-  database = get_connection()
-  modelos = database["modelos"]
+  collection = 'modelos'
+  connection = get_connection()[collection]
+
   lista_modelos = []
-  for modelo in modelos.find():
+  for modelo in connection.find():
       lista_modelos.append(modelo)
+
   return json.dumps(lista_modelos, default=default)
 
 #def list_filter(arg1=None, arg2=None):

@@ -12,8 +12,7 @@ app = Flask(__name__)
 @app.route('/list', methods=['GET', 'POST'])
 def list():
     if request.method == 'GET':
-        return Response(list_all(), status=201, mimetype='application/json')
-        pass
+        return Response(list_all(), status=200, mimetype='application/json')
     elif request.method == 'POST':
         # Filtra o conteúdo antes de listar
         pass
