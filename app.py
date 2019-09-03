@@ -4,9 +4,10 @@ from flask import Response
 from create_function import create_function
 from get_function import list_all, get_model_by_id
 from remove_function import remove_model_by_id
-from update_function import update_function
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/modelo/list', methods=['GET', 'POST'])
 def list():
@@ -38,12 +39,12 @@ def create():
 
 @app.route('/modelo/update', methods=['POST'])
 def update_model():
-    requestData = request.get_json()
-
-    id, dados_resultado = update_function(requestData)
-
-    if id:
-        return Response(dados_resultado, status=200, mimetype='application/json')
+    # requestData = request.get_json()
+    #
+    # id, dados_resultado = update_function(requestData)
+    #
+    # if id:
+    #     return Response(dados_resultado, status=200, mimetype='application/json')
 
     return Response(status=400)
 
