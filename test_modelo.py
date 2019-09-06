@@ -69,3 +69,9 @@ class TestModelo(TestCase):
         self.assertEqual(modelo.medida_cintura, medida_cintura)
         self.assertEqual(modelo.medida_quadril, medida_quadril)
         self.assertEqual(modelo.observacoes, observacoes)
+
+    def test_calcula_idade(self):
+        modelo = Modelo('', '1993-07-09T03:00:00.000Z', '', '',
+                        '','','','','','','','', '', '','','','','','','','', '', '','','','','','','')
+        idade = modelo.calcula_idade()
+        self.assertEqual(26, idade)
