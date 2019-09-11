@@ -27,6 +27,7 @@ class TestModelo(TestCase):
         moradores = '2'
         filhos = '0'
         etnia = 'negro'
+        disponibilidade = 'total'
         renda = '900,00'
         medida_altura = '160'
         medida_busto = '90'
@@ -38,7 +39,7 @@ class TestModelo(TestCase):
                         endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep,
                         nome_responsavel,
                         nascimento_responsavel, email_responsavel, telefone_responsavel, genero, lgbtqia,
-                        escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda, medida_altura,
+                        escolaridade, ocupacao, moradia, moradores, filhos, etnia, disponibilidade, renda, medida_altura,
                         medida_busto, medida_cintura, medida_quadril, observacoes)
         self.assertEqual(modelo.nome, '%s' % nome)
         self.assertEqual(modelo.data_nascimento, data)
@@ -63,6 +64,7 @@ class TestModelo(TestCase):
         self.assertEqual(modelo.moradores, moradores)
         self.assertEqual(modelo.filhos, filhos)
         self.assertEqual(modelo.etnia, etnia)
+        self.assertEqual(modelo.disponibilidade, disponibilidade)
         self.assertEqual(modelo.renda, renda)
         self.assertEqual(modelo.medida_altura, medida_altura)
         self.assertEqual(modelo.medida_busto, medida_busto)
