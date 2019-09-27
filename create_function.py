@@ -38,6 +38,7 @@ def criar_modelo(requestData):
     moradores = requestData.get('moradores', None)
     filhos = requestData.get('filhos', None)
     etnia = requestData.get('etnia', None)
+    disponibilidade = requestData.get('disponibilidade',None)
     renda = requestData.get('renda', None)
     medida_altura = requestData.get('medida_altura', None)
     medida_busto = requestData.get('medida_busto', None)
@@ -48,6 +49,6 @@ def criar_modelo(requestData):
     novo_modelo = Modelo(nome, data_nascimento, email, telefone, endereco_logradouro, endereco_numero,
                          endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, \
                          responsavel_nome, responsavel_nascimento, responsavel_email, responsavel_telefone, genero,
-                         lgbtqia, escolaridade, ocupacao, moradia, moradores, filhos, etnia, renda, \
+                         lgbtqia, escolaridade, ocupacao, moradia, moradores, filhos, etnia, disponibilidade, renda, \
                          medida_altura, medida_busto, medida_cintura, medida_quadril, observacoes)
     return novo_modelo
