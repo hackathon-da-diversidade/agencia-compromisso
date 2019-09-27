@@ -1,4 +1,5 @@
 from unittest import TestCase
+from freezegun import freeze_time
 from modelo import Modelo
 
 class TestModelo(TestCase):
@@ -74,6 +75,9 @@ class TestModelo(TestCase):
 
     def test_calcula_idade(self):
         modelo = Modelo('', '1993-07-09T03:00:00.000Z', '', '',
-                        '','','','','','','','', '', '','','','','','','','', '', '','','','','','','')
+                        '','','','','','','','', '', '','','','','','','','', '', '','','','','','','', '')
+        freezer = freeze_time("2019-09-26 12:00:01")
+        freezer.start()
         idade = modelo.calcula_idade()
         self.assertEqual(26, idade)
+        freezer.stop()

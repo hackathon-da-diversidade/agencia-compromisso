@@ -47,3 +47,4 @@ class Modelo(dict):
 
     def converte_para_data(self, texto):
         return datetime.datetime.strptime(texto, '%Y-%m-%dT03:00:00.000Z')
+
