@@ -1,3 +1,5 @@
+import datetime
+
 class Modelo(dict):
     __getattr__ = dict.get
     __delattr__ = dict.__delitem__
@@ -36,3 +38,13 @@ class Modelo(dict):
         self.medida_cintura = medida_cintura
         self.medida_quadril = medida_quadril
         self.observacoes = observacoes
+
+
+    def calcula_idade(self):
+        hoje = datetime.date.today()
+        ano_nascimento = self.converte_para_data(self.data_nascimento).date()
+        return hoje.year - ano_nascimento.year - ((hoje.month, hoje.day) < (ano_nascimento.month, ano_nascimento.day))
+
+    def converte_para_data(self, texto):
+        return datetime.datetime.strptime(texto, '%Y-%m-%dT03:00:00.000Z')
+
