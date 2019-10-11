@@ -11,3 +11,6 @@ make init
 
 ## rode:
 make run 
+
+## rode os testes:
+make test
