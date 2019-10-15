@@ -1,7 +1,8 @@
 import json
 from bson.json_util import default
 from bson.objectid import ObjectId
-from db import get_connection
+# import pdb; pdb.set_trace()
+from agenciacompromisso.db import get_connection
 
 def list_all():
   collection = 'modelos'
