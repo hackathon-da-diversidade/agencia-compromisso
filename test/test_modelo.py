@@ -1,6 +1,6 @@
 from unittest import TestCase
 from freezegun import freeze_time
-from agenciacompromisso.modelo import Modelo
+from src.modelo import Modelo
 
 class TestModelo(TestCase):
 

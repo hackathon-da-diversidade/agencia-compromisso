@@ -8,7 +8,7 @@ virtualenv:
 	test -d $(venv_path) || python3 -m venv $(venv_path)
 
 run: virtualenv
-	$(source_venv) gunicorn app:app --chdir agenciacompromisso
+	$(source_venv) gunicorn app:app --chdir src
 
 test: virtualenv
 	$(source_venv) python3 -m unittest discover --verbose test 
