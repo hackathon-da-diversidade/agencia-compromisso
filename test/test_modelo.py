@@ -1,13 +1,12 @@
 from unittest import TestCase
 from freezegun import freeze_time
-from modelo import Modelo
+from src.modelo import Modelo
 
 class TestModelo(TestCase):
 
     freezer = freeze_time("2019-09-26 12:00:01")
 
-    def setup_method(self, test_method):
-        print('set up')
+    def setUp(self):
         self.freezer.start()
 
         self.nome = 'Maria'
@@ -49,7 +48,6 @@ class TestModelo(TestCase):
                         self.medida_busto, self.medida_cintura, self.medida_quadril, self.observacoes)
 
     def test_modelo(self):
-        
         self.assertEqual(self.modelo.nome, '%s' % self.nome)
         self.assertEqual(self.modelo.data_nascimento, self.data)
         self.assertEqual(self.modelo.email, self.email)
@@ -85,5 +83,5 @@ class TestModelo(TestCase):
         idade = self.modelo.calcula_idade()
         self.assertEqual(26, idade)
 
-    def teardown_method(self, test_method):
+    def tearDown(self):
         self.freezer.stop()
