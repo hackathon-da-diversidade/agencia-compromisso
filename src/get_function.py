@@ -1,29 +1,30 @@
 import json
 from bson.json_util import default
 from bson.objectid import ObjectId
-from db import get_connection
+from src.db import get_connection
+
 
 def list_all():
-  collection = 'modelos'
-  connection = get_connection()[collection]
+    collection = 'modelos'
+    connection = get_connection()[collection]
 
-  lista_modelos = []
-  for modelo in connection.find():
-      lista_modelos.append(modelo)
+    lista_modelos = []
 
-  return json.dumps(lista_modelos, default=default)
+    for modelo in connection.find():
+        lista_modelos.append({'_id' : modelo['_id'], 'nome' : modelo['nome']})
+    return json.dumps(lista_modelos, default=default)
 
 
 def get_model_by_id(id):
-  collection = 'modelos'
-  connection = get_connection()[collection]
-  modelo = connection.find_one({"_id": ObjectId(id)})
-  if modelo:
-    return json.dumps(modelo, default=default)
+    collection = 'modelos'
+    connection = get_connection()[collection]
+    modelo = connection.find_one({"_id": ObjectId(id)})
+    if modelo:
+        return json.dumps(modelo, default=default)
 
-  return None
+    return None
 
-#def list_filter(arg1=None, arg2=None):
+# def list_filter(arg1=None, arg2=None):
 #  database = get_connection()
 #  modelos = database["modelos"]
 #  lista_modelos = []
