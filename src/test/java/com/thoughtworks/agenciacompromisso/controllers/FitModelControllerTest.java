@@ -2,6 +2,7 @@ package com.thoughtworks.agenciacompromisso.controllers;
 
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class FitModelControllerTest {
         fitModel.setPhoneNumber("519123392222");
 
         FitModel fitModelReturned = new FitModel();
-        fitModelReturned.setId(1);
+        fitModelReturned.setId(new ObjectId());
 
         when(fitModelService.create(refEq(fitModel))).thenReturn(fitModelReturned);
 

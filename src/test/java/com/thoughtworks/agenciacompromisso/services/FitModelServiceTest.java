@@ -2,6 +2,7 @@ package com.thoughtworks.agenciacompromisso.services;
 
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
+import org.bson.types.ObjectId;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,7 +29,7 @@ public class FitModelServiceTest {
         fitModel.setName("Calvin");
 
         FitModel fitModelReturned = new FitModel();
-        fitModelReturned.setId(1);
+        fitModelReturned.setId(new ObjectId());
         fitModelReturned.setName(fitModel.getName());
 
         when(fitModelRepository.save(refEq(fitModel))).thenReturn(fitModelReturned);
