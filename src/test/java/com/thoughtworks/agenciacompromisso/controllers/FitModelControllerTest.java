@@ -37,7 +37,7 @@ public class FitModelControllerTest {
         fitModel.setPhoneNumber("519123392222");
 
         FitModel fitModelReturned = new FitModel();
-        fitModelReturned.setId(BigDecimal.valueOf(1));
+        fitModelReturned.setId(1);
 
         when(fitModelService.create(refEq(fitModel))).thenReturn(fitModelReturned);
 

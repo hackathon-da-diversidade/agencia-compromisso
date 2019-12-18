@@ -1,17 +1,21 @@
 package com.thoughtworks.agenciacompromisso.models;
 
-import java.math.BigDecimal;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collation = "fitmodels")
 public class FitModel {
-    private BigDecimal id;
+    @Id
+    private ObjectId id;
     private String name;
     private String phoneNumber;
 
-    public BigDecimal getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
