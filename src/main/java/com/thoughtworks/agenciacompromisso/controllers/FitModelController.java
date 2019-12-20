@@ -5,6 +5,7 @@ import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
@@ -21,7 +22,7 @@ public class FitModelController {
     private FitModelService fitModelService;
 
     @PostMapping
-    public ResponseEntity create(UriComponentsBuilder uriComponentsBuilder, @Valid FitModel fitModel) {
+    public ResponseEntity create(UriComponentsBuilder uriComponentsBuilder, @RequestBody @Valid FitModel fitModel) {
 
         FitModel createdFitModel = fitModelService.create(fitModel);
 

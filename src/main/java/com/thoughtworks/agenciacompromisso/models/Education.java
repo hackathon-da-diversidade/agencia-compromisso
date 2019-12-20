@@ -1,0 +1,13 @@
+package com.thoughtworks.agenciacompromisso.models;
+
+public enum Education {
+    NO_EDUCATION,
+    INCOMPLETE_MIDDLE_SCHOOL,
+    MIDDLE_SCHOOL,
+    INCOMPLETE_HIGH_SCHOOL,
+    HIGH_SCHOOL,
+    INCOMPLETE_TECHNICAL_SCHOOL,
+    TECHNICAL_SCHOOL,
+    INCOMPLETE_HIGHER_EDUCATION,
+    HIGHER_EDUCATION;
+}

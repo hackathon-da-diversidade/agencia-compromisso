@@ -1,6 +1,8 @@
 package com.thoughtworks.agenciacompromisso.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
+import com.thoughtworks.agenciacompromisso.models.GenderExpression;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -11,8 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.math.BigDecimal;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.refEq;
@@ -35,7 +35,8 @@ public class FitModelControllerTest {
     public void shouldReturnStatusCode201AndLocationHeaderWhenPostingFitModel() throws Exception {
         FitModel fitModel = new FitModel();
         fitModel.setName("Maria");
-        fitModel.setPhoneNumber("519123392222");
+        fitModel.setPhoneNumber("51999111111");
+        fitModel.setGenderExpression(GenderExpression.FEMALE);
 
         FitModel fitModelReturned = new FitModel();
         fitModelReturned.setId(new ObjectId());
@@ -43,11 +44,10 @@ public class FitModelControllerTest {
         when(fitModelService.create(refEq(fitModel))).thenReturn(fitModelReturned);
 
         mockMvc.perform(
-                        post("/fit-model")
-                                .accept(MediaType.APPLICATION_JSON)
-                                .param("name", fitModel.getName())
-                                .param("phoneNumber", fitModel.getPhoneNumber()))
-                .andExpect(header().string("location", containsString("fit-model/" + fitModelReturned.getId())))
-                .andExpect(status().isCreated());
+                post("/fit-model")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(fitModel)))
+                        .andExpect(header().string("location", containsString("fit-model/" + fitModelReturned.getId())))
+                        .andExpect(status().isCreated());
     }
 }
