@@ -37,6 +37,7 @@ public class FitModel {
     @Valid
     private Sizes sizes;
 
+    @Valid
     private SocialInformation socialInformation;
 
     public ObjectId getId() {
@@ -133,5 +134,9 @@ public class FitModel {
 
     public void setSizes(Sizes sizes) {
         this.sizes = sizes;
+    }
+
+    public void setSocialInformation(SocialInformation socialInformation) {
+        this.socialInformation = socialInformation;
     }
 }
