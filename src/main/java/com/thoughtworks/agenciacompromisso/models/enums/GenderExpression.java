@@ -1,4 +1,4 @@
-package com.thoughtworks.agenciacompromisso.models;
+package com.thoughtworks.agenciacompromisso.models.enums;
 
 public enum GenderExpression {
     FEMALE,

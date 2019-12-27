@@ -1,5 +1,6 @@
 package com.thoughtworks.agenciacompromisso.models;
 
+import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,13 +8,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FitModelTest {
 
@@ -26,6 +27,12 @@ public class FitModelTest {
         validator = factory.getValidator();
 
         fitModel = getValidFitModel();
+    }
+
+
+    @Test
+    public void shouldNotBeInvalidWhenEverythingIsSet() {
+        assertFalse(isInvalid(fitModel));
     }
 
     @Test
@@ -47,10 +54,18 @@ public class FitModelTest {
         assertTrue(isInvalid(fitModel));
     }
 
+    @Test
+    public void shouldReturnInvalidWhenFitModelSizesAreNotSet() {
+        fitModel.setSizes(null);
+        assertTrue(isInvalid(fitModel));
+    }
+
+
     private FitModel getValidFitModel() {
         FitModel fitModel = new FitModel();
         fitModel.setName("João da Silva");
         fitModel.setGenderExpression(GenderExpression.MALE);
+        fitModel.setSizes(new Sizes(100.0, 90.0, 120.0, 170.0));
         return fitModel;
     }
 

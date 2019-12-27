@@ -1,9 +1,13 @@
 package com.thoughtworks.agenciacompromisso.models;
 
+import com.thoughtworks.agenciacompromisso.models.enums.Availability;
+import com.thoughtworks.agenciacompromisso.models.enums.Education;
+import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.Date;
 
@@ -12,6 +16,7 @@ public class FitModel {
 
     @Id
     private ObjectId id;
+
     @NotEmpty
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     private String name;
@@ -27,6 +32,12 @@ public class FitModel {
     private Education education;
     private String guardianName;
     private String guardianPhoneNumber;
+
+    @NotNull
+    @Valid
+    private Sizes sizes;
+
+    private SocialInformation socialInformation;
 
     public ObjectId getId() {
         return id;
@@ -114,5 +125,13 @@ public class FitModel {
 
     public void setGuardianPhoneNumber(String guardianPhoneNumber) {
         this.guardianPhoneNumber = guardianPhoneNumber;
+    }
+
+    public Sizes getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(Sizes sizes) {
+        this.sizes = sizes;
     }
 }
