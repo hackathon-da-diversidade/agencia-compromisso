@@ -3,19 +3,19 @@ package com.thoughtworks.agenciacompromisso.models;
 import com.thoughtworks.agenciacompromisso.models.enums.Availability;
 import com.thoughtworks.agenciacompromisso.models.enums.Education;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
-@Document(collation = "fitmodels")
 public class FitModel {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     @NotEmpty
     @Pattern(regexp = "^[\\p{L} .'-]+$")
@@ -40,11 +40,11 @@ public class FitModel {
     @Valid
     private SocialInformation socialInformation;
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

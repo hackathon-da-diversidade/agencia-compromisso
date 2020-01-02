@@ -4,6 +4,8 @@ import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FitModelService {
     private FitModelRepository fitModelRepository;
@@ -14,5 +16,9 @@ public class FitModelService {
 
     public FitModel create(FitModel fitModel) {
         return fitModelRepository.save(fitModel);
+    }
+
+    public List<FitModel> getAll() {
+        return fitModelRepository.findAll();
     }
 }
