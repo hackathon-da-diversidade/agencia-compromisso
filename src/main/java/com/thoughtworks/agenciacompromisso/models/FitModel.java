@@ -1,5 +1,6 @@
 package com.thoughtworks.agenciacompromisso.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.thoughtworks.agenciacompromisso.models.enums.Availability;
 import com.thoughtworks.agenciacompromisso.models.enums.Education;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
@@ -13,20 +14,24 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 public class FitModel {
-
     @Id
+    @JsonView(View.List.class)
     private String id;
 
     @NotEmpty
     @Pattern(regexp = "^[\\p{L} .'-]+$")
+    @JsonView(View.List.class)
     private String name;
+
     @Past
     private Date birthday;
     private Availability availability;
+
     @Pattern(regexp = "\\d{8,12}")
     private String phoneNumber;
     private String projects;
     private String address;
+
     @NotNull
     private GenderExpression genderExpression;
     private Education education;

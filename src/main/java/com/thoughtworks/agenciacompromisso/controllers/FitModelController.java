@@ -1,6 +1,8 @@
 package com.thoughtworks.agenciacompromisso.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
+import com.thoughtworks.agenciacompromisso.models.View;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ public class FitModelController {
 
 
     @GetMapping
+    @JsonView(View.List.class)
     public ResponseEntity getAll() {
         List<FitModel> fitModelList = fitModelService.getAll();
         return ResponseEntity.ok().body(fitModelList);

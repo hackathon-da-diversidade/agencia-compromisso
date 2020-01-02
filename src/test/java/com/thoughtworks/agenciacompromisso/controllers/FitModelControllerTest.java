@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -69,6 +70,8 @@ public class FitModelControllerTest {
     @Test
     public void shouldReturnStatusCode200AndFitModelListWhenGetFitModel() throws Exception {
         List<FitModel> fitModelList = new ArrayList<>();
+        String id = new ObjectId().toString();
+        fitModel.setId(id);
         fitModelList.add(fitModel);
         fitModelList.add(fitModel);
 
@@ -80,7 +83,8 @@ public class FitModelControllerTest {
 
         String content = result.getResponse().getContentAsString();
 
-        assertThat(content, is(new ObjectMapper().writeValueAsString(fitModelList)));
-
+        assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
+        assertThat(content, containsString("\"id\":\""+id+"\""));
+        assertThat(content, containsString("\"name\":\"Maria\""));
     }
 }
