@@ -11,8 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.swing.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
