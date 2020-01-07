@@ -2,6 +2,7 @@ package com.thoughtworks.agenciacompromisso.services;
 
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,5 +21,9 @@ public class FitModelService {
 
     public List<FitModel> getAll() {
         return fitModelRepository.findAll();
+    }
+
+    public FitModel get(ObjectId id) {
+        return fitModelRepository.findById(id);
     }
 }

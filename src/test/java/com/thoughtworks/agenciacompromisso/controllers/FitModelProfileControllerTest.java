@@ -12,7 +12,6 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,22 +21,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 @RunWith(SpringRunner.class)
-@WebMvcTest(FitModelController.class)
-public class FitModelControllerTest {
+@WebMvcTest(FitModelProfileController.class)
+public class FitModelProfileControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,43 +51,20 @@ public class FitModelControllerTest {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
-
     @Test
-    public void shouldReturnStatusCode201AndLocationHeaderWhenPostFitModel() throws Exception {
-        FitModel fitModelReturned = new FitModel();
-        fitModelReturned.setId(new ObjectId().toString());
+    public void shouldReturnStatusCode200AndFitModelInformationWhenGetFitModelWithId() throws Exception {
+        fitModel.setId(new ObjectId().toString());
 
-        when(fitModelService.create(ArgumentMatchers.any())).thenReturn(fitModelReturned);
-
-        mockMvc.perform(
-                post("/fit-model")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(fitModel)))
-                .andExpect(header().string("location", containsString("fit-model/" + fitModelReturned.getId())))
-                .andExpect(status().isCreated());
-    }
-
-    @Test
-    public void shouldReturnStatusCode200AndFitModelListWhenGetFitModel() throws Exception {
-        List<FitModel> fitModelList = new ArrayList<>();
-        String id = new ObjectId().toString();
-        fitModel.setId(id);
-        fitModelList.add(fitModel);
-        fitModelList.add(fitModel);
-
-        when(fitModelService.getAll()).thenReturn(fitModelList);
+        when(fitModelService.get(any())).thenReturn(fitModel);
 
         MvcResult result = mockMvc.perform(
-                get("/fit-model")
-                .contentType(MediaType.APPLICATION_JSON))
+                get("/fit-model/"+fitModel.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
-        assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
-        assertThat(content, containsString("\"id\":\""+id+"\""));
-        assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
-        assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
+        assertThat(content, is(objectMapper.writeValueAsString(fitModel)) );
     }
 
     public FitModel getValidFitModel(){

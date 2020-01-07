@@ -43,7 +43,6 @@ public class FitModelServiceTest {
         fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
         fitModel.setBirthday(LocalDate.of(1990, 2, 11));
 
-
     }
 
     @Test
@@ -74,6 +73,19 @@ public class FitModelServiceTest {
         List<FitModel> fitModelListReturned = fitModelService.getAll();
         assertThat(fitModelListReturned.size(), is(fitModelList.size()));
         assertThat(fitModelListReturned.get(1).getName(), is("João"));
+    }
+
+    @Test
+    public void shouldGetFitModel() {
+
+        ObjectId id = new ObjectId();
+        fitModel.setId(id.toString());
+
+        when(fitModelRepository.findById(id)).thenReturn(fitModel);
+        FitModel fitModelReturned = fitModelService.get(id);
+
+        assertThat(fitModelReturned, is(fitModel));
+
     }
 
 }
