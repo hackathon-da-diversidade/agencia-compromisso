@@ -2,8 +2,6 @@ package com.thoughtworks.agenciacompromisso.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.thoughtworks.agenciacompromisso.models.enums.Availability;
 import com.thoughtworks.agenciacompromisso.models.enums.Education;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;

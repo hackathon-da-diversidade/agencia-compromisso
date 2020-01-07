@@ -17,5 +17,61 @@ public class SocialInformation {
     private FamilyIncome familyIncome;
     @Min(0)
     private int numberOfChildren;
-    private boolean identifyAsLGBTQIA;
+
+    public Ethnicity getEthnicity() {
+        return ethnicity;
+    }
+
+    public void setEthnicity(Ethnicity ethnicity) {
+        this.ethnicity = ethnicity;
+    }
+
+    public Housing getHousing() {
+        return housing;
+    }
+
+    public void setHousing(Housing housing) {
+        this.housing = housing;
+    }
+
+    public int getNumberOfResidents() {
+        return numberOfResidents;
+    }
+
+    public void setNumberOfResidents(int numberOfResidents) {
+        this.numberOfResidents = numberOfResidents;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public OccupationMode getOccupationMode() {
+        return occupationMode;
+    }
+
+    public void setOccupationMode(OccupationMode occupationMode) {
+        this.occupationMode = occupationMode;
+    }
+
+    public FamilyIncome getFamilyIncome() {
+        return familyIncome;
+    }
+
+    public void setFamilyIncome(FamilyIncome familyIncome) {
+        this.familyIncome = familyIncome;
+    }
+
+    public int getNumberOfChildren() {
+        return numberOfChildren;
+    }
+
+    public void setNumberOfChildren(int numberOfChildren) {
+        this.numberOfChildren = numberOfChildren;
+    }
+
 }

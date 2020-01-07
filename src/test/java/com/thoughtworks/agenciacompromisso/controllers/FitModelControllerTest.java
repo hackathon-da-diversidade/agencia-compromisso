@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
-import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
+import com.thoughtworks.agenciacompromisso.models.SocialInformation;
+import com.thoughtworks.agenciacompromisso.models.enums.*;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
@@ -46,14 +48,8 @@ public class FitModelControllerTest {
     private FitModel fitModel;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        fitModel = new FitModel();
-        fitModel.setName("Maria");
-        fitModel.setPhoneNumber("51999111111");
-        fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
-        LocalDate birthday = LocalDate.parse("1992-12-10");
-        fitModel.setBirthday(birthday);
+    public void setUp() {
+        getValidFitModel();
     }
 
 
@@ -97,6 +93,33 @@ public class FitModelControllerTest {
 
         assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
         assertThat(content, containsString("\"id\":\""+id+"\""));
-        assertThat(content, containsString("\"name\":\"Maria\""));
+        assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
+        assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
+    }
+
+    public FitModel getValidFitModel(){
+        fitModel = new FitModel();
+        fitModel.setName("Maria dos Santos");
+        fitModel.setPhoneNumber("51999111111");
+        fitModel.setGenderExpression(GenderExpression.FEMALE);
+        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
+        fitModel.setBirthday(LocalDate.parse("2008-12-10"));
+        fitModel.setAddress("Avenida Ipiranga, 1963, Porto Alegre");
+        fitModel.setAvailability(Availability.AFTERNOON);
+        fitModel.setEducation(Education.INCOMPLETE_HIGH_SCHOOL);
+        fitModel.setGuardianName("Claudia dos Santos");
+        fitModel.setGuardianPhoneNumber("51999111111");
+        fitModel.setIdentifyAsLGBTQIA(true);
+        fitModel.setProjects("Nome do Projeto");
+        SocialInformation socialInformation = new SocialInformation();
+        socialInformation.setEthnicity(Ethnicity.PARDO);
+        socialInformation.setFamilyIncome(FamilyIncome.TWO_MINIMUM_WAGE);
+        socialInformation.setHousing(Housing.RENTED);
+        socialInformation.setNumberOfChildren(0);
+        socialInformation.setNumberOfResidents(3);
+        socialInformation.setOccupation("Ocupacao");
+        socialInformation.setOccupationMode(OccupationMode.AUTONOMOUS);
+        fitModel.setSocialInformation(socialInformation);
+        return fitModel;
     }
 }
