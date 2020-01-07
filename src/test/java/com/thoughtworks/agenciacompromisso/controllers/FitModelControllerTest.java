@@ -1,14 +1,17 @@
 package com.thoughtworks.agenciacompromisso.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,14 +20,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,26 +45,36 @@ public class FitModelControllerTest {
 
     private FitModel fitModel;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         fitModel = new FitModel();
         fitModel.setName("Maria");
         fitModel.setPhoneNumber("51999111111");
         fitModel.setGenderExpression(GenderExpression.FEMALE);
         fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
+        LocalDate birthday = LocalDate.parse("1992-12-10");
+        fitModel.setBirthday(birthday);
     }
+
 
     @Test
     public void shouldReturnStatusCode201AndLocationHeaderWhenPostFitModel() throws Exception {
         FitModel fitModelReturned = new FitModel();
         fitModelReturned.setId(new ObjectId().toString());
 
-        when(fitModelService.create(any(FitModel.class))).thenReturn(fitModelReturned);
+
+        when(fitModelService.create(ArgumentMatchers.any())).thenReturn(fitModelReturned);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        String fitModelJson = objectMapper.writeValueAsString(fitModel);
 
         mockMvc.perform(
                 post("/fit-model")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(fitModel)))
+                        .contentType(MediaType.APPLICATION_JSON.toString())
+                        .content(fitModelJson))
                 .andExpect(header().string("location", containsString("fit-model/" + fitModelReturned.getId())))
                 .andExpect(status().isCreated());
     }

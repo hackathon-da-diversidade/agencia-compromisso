@@ -1,17 +1,21 @@
 package com.thoughtworks.agenciacompromisso.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.thoughtworks.agenciacompromisso.models.enums.Availability;
 import com.thoughtworks.agenciacompromisso.models.enums.Education;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class FitModel {
     @Id
@@ -23,8 +27,11 @@ public class FitModel {
     @JsonView(View.List.class)
     private String name;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull
     @Past
-    private Date birthday;
+    private LocalDate birthday;
     private Availability availability;
 
     @Pattern(regexp = "\\d{8,12}")
@@ -64,11 +71,11 @@ public class FitModel {
         this.name = name;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
