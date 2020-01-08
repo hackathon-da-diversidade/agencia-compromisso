@@ -1,14 +1,18 @@
 package com.thoughtworks.agenciacompromisso.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
-import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
+import com.thoughtworks.agenciacompromisso.models.SocialInformation;
+import com.thoughtworks.agenciacompromisso.models.enums.*;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,27 +47,28 @@ public class FitModelControllerTest {
     private FitModelService fitModelService;
 
     private FitModel fitModel;
+    private ObjectMapper objectMapper;
 
-    @Before
-    public void setUp() throws Exception {
-        fitModel = new FitModel();
-        fitModel.setName("Maria");
-        fitModel.setPhoneNumber("51999111111");
-        fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
+    @BeforeEach
+    public void setUp() {
+        getValidFitModel();
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
+
 
     @Test
     public void shouldReturnStatusCode201AndLocationHeaderWhenPostFitModel() throws Exception {
         FitModel fitModelReturned = new FitModel();
         fitModelReturned.setId(new ObjectId().toString());
 
-        when(fitModelService.create(any(FitModel.class))).thenReturn(fitModelReturned);
+        when(fitModelService.create(ArgumentMatchers.any())).thenReturn(fitModelReturned);
 
         mockMvc.perform(
                 post("/fit-model")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(fitModel)))
+                        .content(objectMapper.writeValueAsString(fitModel)))
                 .andExpect(header().string("location", containsString("fit-model/" + fitModelReturned.getId())))
                 .andExpect(status().isCreated());
     }
@@ -78,13 +84,57 @@ public class FitModelControllerTest {
         when(fitModelService.getAll()).thenReturn(fitModelList);
 
         MvcResult result = mockMvc.perform(
-                get("/fit-model").contentType(MediaType.APPLICATION_JSON))
+                get("/fit-model")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
         assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
         assertThat(content, containsString("\"id\":\""+id+"\""));
-        assertThat(content, containsString("\"name\":\"Maria\""));
+        assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
+        assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
+    }
+
+    @Test
+    public void shouldReturnStatusCode200AndFitModelInformationWhenGetFitModelWithId() throws Exception {
+        fitModel.setId(new ObjectId().toString());
+
+        when(fitModelService.get(any())).thenReturn(fitModel);
+
+        MvcResult result = mockMvc.perform(
+                get("/fit-model/"+fitModel.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        assertThat(content, is(objectMapper.writeValueAsString(fitModel)) );
+    }
+
+    public FitModel getValidFitModel(){
+        fitModel = new FitModel();
+        fitModel.setName("Maria dos Santos");
+        fitModel.setPhoneNumber("51999111111");
+        fitModel.setGenderExpression(GenderExpression.FEMALE);
+        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
+        fitModel.setBirthday(LocalDate.parse("2008-12-10"));
+        fitModel.setAddress("Avenida Ipiranga, 1963, Porto Alegre");
+        fitModel.setAvailability(Availability.AFTERNOON);
+        fitModel.setEducation(Education.INCOMPLETE_HIGH_SCHOOL);
+        fitModel.setGuardianName("Claudia dos Santos");
+        fitModel.setGuardianPhoneNumber("51999111111");
+        fitModel.setIdentifyAsLGBTQIA(true);
+        fitModel.setProjects("Nome do Projeto");
+        SocialInformation socialInformation = new SocialInformation();
+        socialInformation.setEthnicity(Ethnicity.PARDO);
+        socialInformation.setFamilyIncome(FamilyIncome.TWO_MINIMUM_WAGE);
+        socialInformation.setHousing(Housing.RENTED);
+        socialInformation.setNumberOfChildren(0);
+        socialInformation.setNumberOfResidents(3);
+        socialInformation.setOccupation("Ocupacao");
+        socialInformation.setOccupationMode(OccupationMode.AUTONOMOUS);
+        fitModel.setSocialInformation(socialInformation);
+        return fitModel;
     }
 }

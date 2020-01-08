@@ -5,36 +5,45 @@ import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
 import org.bson.types.ObjectId;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class FitModelServiceTest {
-    private FitModelService fitModelService;
+
     private FitModel fitModel;
 
-    @Mock
+    @MockBean
     private FitModelRepository fitModelRepository;
 
-    @Before
-    public void setUp() throws Exception {
-        fitModelService = new FitModelService(fitModelRepository);
+    @Autowired
+    private FitModelService fitModelService;
+
+    @BeforeEach
+    public void setUp() {
         fitModel = new FitModel();
         fitModel.setName("Maria");
         fitModel.setPhoneNumber("51999111111");
         fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));    }
+        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
+        fitModel.setBirthday(LocalDate.of(1990, 2, 11));
+
+    }
 
     @Test
     public void shouldCreateFitModel() {
@@ -42,7 +51,7 @@ public class FitModelServiceTest {
         fitModelReturned.setId(new ObjectId().toString());
         fitModelReturned.setName(fitModel.getName());
 
-        when(fitModelRepository.save(refEq(fitModel))).thenReturn(fitModelReturned);
+        when(fitModelRepository.save(any(FitModel.class))).thenReturn(fitModelReturned);
 
         FitModel createdFitModel = fitModelService.create(fitModel);
         assertThat(createdFitModel.getName(), is(fitModelReturned.getName()));
@@ -63,7 +72,20 @@ public class FitModelServiceTest {
 
         List<FitModel> fitModelListReturned = fitModelService.getAll();
         assertThat(fitModelListReturned.size(), is(fitModelList.size()));
-        assertThat(fitModelListReturned.get(1).getName(),is("João"));
+        assertThat(fitModelListReturned.get(1).getName(), is("João"));
+    }
+
+    @Test
+    public void shouldGetFitModel() {
+
+        ObjectId id = new ObjectId();
+        fitModel.setId(id.toString());
+
+        when(fitModelRepository.findById(id)).thenReturn(fitModel);
+        FitModel fitModelReturned = fitModelService.get(id);
+
+        assertThat(fitModelReturned, is(fitModel));
+
     }
 
 }
