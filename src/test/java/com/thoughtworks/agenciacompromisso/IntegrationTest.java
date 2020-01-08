@@ -46,7 +46,7 @@ public class IntegrationTest {
         assertThat(repository.findAll().size()).isEqualTo(1);
     }
 
-    @DisplayName("should find fit-model by id and return all informations")
+    @DisplayName("should find fit-model by id and return all information")
     @Test
     public void testFindById() {
         repository.save(fitModel);

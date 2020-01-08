@@ -29,6 +29,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -93,6 +94,22 @@ public class FitModelControllerTest {
         assertThat(content, containsString("\"id\":\""+id+"\""));
         assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
         assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
+    }
+
+    @Test
+    public void shouldReturnStatusCode200AndFitModelInformationWhenGetFitModelWithId() throws Exception {
+        fitModel.setId(new ObjectId().toString());
+
+        when(fitModelService.get(any())).thenReturn(fitModel);
+
+        MvcResult result = mockMvc.perform(
+                get("/fit-model/"+fitModel.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        assertThat(content, is(objectMapper.writeValueAsString(fitModel)) );
     }
 
     public FitModel getValidFitModel(){
