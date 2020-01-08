@@ -8,6 +8,7 @@ import com.thoughtworks.agenciacompromisso.models.enums.OccupationMode;
 import javax.validation.constraints.Min;
 
 public class SocialInformation {
+
     private Ethnicity ethnicity;
     private Housing housing;
     @Min(1)

@@ -51,7 +51,7 @@ public class FitModelControllerTest {
 
     @BeforeEach
     public void setUp() {
-        getValidFitModel();
+        populateValidFitModel();
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -112,7 +112,16 @@ public class FitModelControllerTest {
         assertThat(content, is(objectMapper.writeValueAsString(fitModel)) );
     }
 
-    public FitModel getValidFitModel(){
+    public void populateValidFitModel() {
+        SocialInformation socialInformation = new SocialInformation();
+        socialInformation.setEthnicity(Ethnicity.PARDO);
+        socialInformation.setFamilyIncome(FamilyIncome.TWO_MINIMUM_WAGE);
+        socialInformation.setHousing(Housing.RENTED);
+        socialInformation.setNumberOfChildren(0);
+        socialInformation.setNumberOfResidents(3);
+        socialInformation.setOccupation("Ocupacao");
+        socialInformation.setOccupationMode(OccupationMode.AUTONOMOUS);
+
         fitModel = new FitModel();
         fitModel.setName("Maria dos Santos");
         fitModel.setPhoneNumber("51999111111");
@@ -126,15 +135,6 @@ public class FitModelControllerTest {
         fitModel.setGuardianPhoneNumber("51999111111");
         fitModel.setIdentifyAsLGBTQIA(true);
         fitModel.setProjects("Nome do Projeto");
-        SocialInformation socialInformation = new SocialInformation();
-        socialInformation.setEthnicity(Ethnicity.PARDO);
-        socialInformation.setFamilyIncome(FamilyIncome.TWO_MINIMUM_WAGE);
-        socialInformation.setHousing(Housing.RENTED);
-        socialInformation.setNumberOfChildren(0);
-        socialInformation.setNumberOfResidents(3);
-        socialInformation.setOccupation("Ocupacao");
-        socialInformation.setOccupationMode(OccupationMode.AUTONOMOUS);
         fitModel.setSocialInformation(socialInformation);
-        return fitModel;
     }
 }
