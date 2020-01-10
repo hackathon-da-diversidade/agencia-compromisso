@@ -5,5 +5,6 @@ public enum Ethnicity {
     WHITE,
     PARDO,
     BLACK,
+    NATIVE,
     PREFER_NOT_TO_INFORM;
 }
