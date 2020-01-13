@@ -44,6 +44,7 @@ public class FitModel {
     private GenderExpression genderExpression;
     private Education education;
     private String guardianName;
+    @Pattern(regexp = "\\(\\d{2}\\)\\d{8,12}")
     private String guardianPhoneNumber;
 
     @NotNull

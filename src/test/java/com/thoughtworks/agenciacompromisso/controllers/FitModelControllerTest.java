@@ -124,7 +124,7 @@ public class FitModelControllerTest {
 
         fitModel = new FitModel();
         fitModel.setName("Maria dos Santos");
-        fitModel.setPhoneNumber("51999111111");
+        fitModel.setPhoneNumber("(51)999111111");
         fitModel.setGenderExpression(GenderExpression.FEMALE);
         fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
         fitModel.setBirthday(LocalDate.parse("2008-12-10"));
@@ -132,7 +132,7 @@ public class FitModelControllerTest {
         fitModel.setAvailability(Availability.AFTERNOON);
         fitModel.setEducation(Education.INCOMPLETE_HIGH_SCHOOL);
         fitModel.setGuardianName("Claudia dos Santos");
-        fitModel.setGuardianPhoneNumber("51999111111");
+        fitModel.setGuardianPhoneNumber("(51)999111111");
         fitModel.setIdentifyAsLGBTQIA(true);
         fitModel.setProjects("Nome do Projeto");
         fitModel.setSocialInformation(socialInformation);
