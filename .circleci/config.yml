@@ -48,10 +48,10 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy-prod:
+      - approve-deploy-prod:
           type: approval
           requires:
             - deploy-staging
-          filters:
-            branches:
-              only: master
+      - deploy-prod:
+          requires:
+            - approve-deploy-prod
