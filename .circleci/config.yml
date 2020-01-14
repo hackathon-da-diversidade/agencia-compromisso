@@ -38,4 +38,4 @@ workflows:
             - build
           filters:
             branches:
-              only: refactoring-java
+              only: master

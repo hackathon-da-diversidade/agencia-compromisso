@@ -49,8 +49,25 @@ Para rodar a aplicação local certifique-se de configurar a conexão com algum 
 
 ## CI/CD
 
-## Links
+O projeto conta com uma pipeline configurada no CircleCI que você pode acessar atráves desse [link](https://circleci.com/gh/hackathon-da-diversidade/agencia-compromisso). 
+A cada novo *commit* na *master* a pipeline roda automáticamente, buildando e rodando todos os testes da aplicação. Caso esse processo seja um sucesso é feito o deploy no ambiente de [staging](https://agencia-compromisso-api-stg.herokuapp.com/). 
+O deploy para [produção](https://agencia-compromisso-api.herokuapp.com/) é um passo manual e pode ser facilmente execultado dentro do CircleCI. 
 
-## Contributing
+## Ambientes
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+* [Staging](https://agencia-compromisso-api-stg.herokuapp.com/)
+* [Produção](https://agencia-compromisso-api.herokuapp.com/)
+
+
+## Contribuindo
+
+Qualquer ajuda é bem vinda e adorariamos receber sua contribuição. Acesse o nosso [trello](https://trello.com/b/YL5SbWzZ/ag%C3%AAncia-compromisso) para entender o estágio atual do projeto, lá você encontra tudo que estamos trabalhando e o que queremos iniciar.
+Procure também as pessoas envolvidas no projeto atualmente em caso de dúvidas.
+
+
+## Acessos 
+
+1. Faça download do Buttercup: https://buttercup.pw/
+2. Clone o projeto
+3. O arquivo que contém os acessos se chama "agencia_compromisso.bcup"
+Para abrir o arquivo no programa você precisará da senha mestre. Pedir ela a alguém que esteja envolvido no projeto :)
