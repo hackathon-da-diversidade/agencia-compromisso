@@ -26,8 +26,8 @@ public class FitModel {
     private String name;
 
     @JsonView(View.List.class)
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull
     @Past
     private LocalDate birthday;
