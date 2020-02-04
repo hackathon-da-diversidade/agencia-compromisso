@@ -21,9 +21,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity authorize(@PathVariable("email") String email) {
         Boolean isAuthorized = userService.isAuthorized(email);
+        HttpHeaders headers = new HttpHeaders();
+
         if (isAuthorized) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", "http://localhost:3000/menu");
+            headers.add("Location", "/menu");
             return ResponseEntity.ok().headers(headers).build();
         }
         return ResponseEntity.notFound().build();

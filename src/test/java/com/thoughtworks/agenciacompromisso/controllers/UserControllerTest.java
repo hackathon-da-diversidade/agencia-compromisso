@@ -1,7 +1,6 @@
 package com.thoughtworks.agenciacompromisso.controllers;
 
 import com.thoughtworks.agenciacompromisso.services.UserService;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -38,7 +37,7 @@ public class UserControllerTest {
         mockMvc.perform(
                 get("/authorize/"+"example@example.com")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(header().string("Location", containsString("http://localhost:3000/menu")))
+                .andExpect(header().string("Location", containsString("/menu")))
                 .andExpect(status().isOk());
     }
 
