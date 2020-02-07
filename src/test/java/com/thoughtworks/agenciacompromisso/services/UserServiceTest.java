@@ -9,9 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
@@ -28,29 +25,16 @@ public class UserServiceTest {
 
     @Test
     public void shouldReturnTrueIfUserIsListed() {
-        List<User> userList = new ArrayList<>();
         User user = new User("user@example.com");
-
-        userList.add(user);
-
-        when(userRepository.findAll()).thenReturn(userList);
-
+        when(userRepository.findByEmail("user@example.com")).thenReturn(user);
         Boolean isAuthorized = userService.isAuthorized(user.getEmail());
-
         assertThat(isAuthorized, is(true));
     }
 
     @Test
     public void shouldReturnFalseIfUserIsNotListed() {
-        List<User> userList = new ArrayList<>();
-        User user = new User("user@example.com");
-
-        userList.add(user);
-
-        when(userRepository.findAll()).thenReturn(userList);
-
+        when(userRepository.findByEmail("not_authorized@example.com")).thenReturn(null);
         Boolean isAuthorized = userService.isAuthorized("not_authorized@example.com");
-
         assertThat(isAuthorized, is(false));
     }
 }
