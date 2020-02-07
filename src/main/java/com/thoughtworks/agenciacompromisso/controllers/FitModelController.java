@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/fit-model")
-
 public class FitModelController {
 
     @Autowired
