@@ -55,6 +55,8 @@ public class FitModel {
     private SocialInformation socialInformation;
     private boolean identifyAsLGBTQIA;
 
+    private String notes;
+
 
     public String getId() {
         return id;
@@ -168,4 +170,11 @@ public class FitModel {
         this.identifyAsLGBTQIA = identifyAsLGBTQIA;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }
