@@ -1,6 +1,7 @@
 package com.thoughtworks.agenciacompromisso.models;
 
 import com.thoughtworks.agenciacompromisso.models.enums.Availability;
+import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,18 +59,13 @@ public class FitModelTest {
         assertFalse(isInvalid(fitModel));
     }
 
-    @Test
-    public void shouldReturnInvalidWhenFitModelAvailabilityIsNotSet() {
-        fitModel.setAvailability(null);
-        assertTrue(isInvalid(fitModel));
-    }
-
 
     private FitModel getValidFitModel() {
         FitModel fitModel = new FitModel();
         fitModel.setName("João da Silva");
         fitModel.setBirthday(LocalDate.of(1990, 12, 14));
         fitModel.setAvailability(Availability.MORNING);
+        fitModel.setNotes("obs");
         return fitModel;
     }
 
