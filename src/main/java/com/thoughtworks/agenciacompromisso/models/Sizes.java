@@ -4,17 +4,13 @@ import javax.validation.constraints.NotNull;
 
 public class Sizes {
 
-    @NotNull
     private Double totalBustCircumference;
-    @NotNull
     private Double totalWaistCircumference;
-    @NotNull
     private Double totalHipCircumference;
-    @NotNull
     private Double height;
 
 
-    public Sizes(@NotNull Double totalBustCircumference, @NotNull Double totalWaistCircumference, @NotNull Double totalHipCircumference, @NotNull Double height) {
+    public Sizes(Double totalBustCircumference, Double totalWaistCircumference, Double totalHipCircumference, Double height) {
         this.totalBustCircumference = totalBustCircumference;
         this.totalWaistCircumference = totalWaistCircumference;
         this.totalHipCircumference = totalHipCircumference;

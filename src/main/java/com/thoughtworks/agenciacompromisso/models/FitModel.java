@@ -31,6 +31,8 @@ public class FitModel {
     @NotNull
     @Past
     private LocalDate birthday;
+
+    @NotNull
     private Availability availability;
 
     @JsonView(View.List.class)
@@ -40,14 +42,12 @@ public class FitModel {
     private String address;
 
     @JsonView(View.List.class)
-    @NotNull
     private GenderExpression genderExpression;
     private Education education;
     private String guardianName;
     @Pattern(regexp = "\\(\\d{2}\\)\\d{8,12}")
     private String guardianPhoneNumber;
 
-    @NotNull
     @Valid
     private Sizes sizes;
 
