@@ -5,6 +5,7 @@ import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.View;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +38,25 @@ public class FitModelController {
         return ResponseEntity.created(uriComponents.toUri()).build();
     }
 
-    @RequestMapping("/{id}")
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") ObjectId id) {
         FitModel fitModel = fitModelService.get(id);
         return ResponseEntity.ok().body(fitModel);
+    }
+
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity update(@PathVariable("id") ObjectId id, @RequestBody FitModel updatedFitModel) {
+
+        FitModel fitModel = fitModelService.get(id);
+
+        if (!fitModel.getName().isEmpty()) {
+            BeanUtils.copyProperties(fitModel, updatedFitModel);
+            FitModel res = fitModelService.update(fitModel, id);
+            return ResponseEntity.ok().body(res);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
