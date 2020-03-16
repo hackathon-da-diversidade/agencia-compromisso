@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,9 +31,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,13 +85,13 @@ public class FitModelControllerTest {
 
         MvcResult result = mockMvc.perform(
                 get("/fit-model")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
         assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
-        assertThat(content, containsString("\"id\":\""+id+"\""));
+        assertThat(content, containsString("\"id\":\"" + id + "\""));
         assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
         assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
     }
@@ -103,13 +103,44 @@ public class FitModelControllerTest {
         when(fitModelService.get(any())).thenReturn(fitModel);
 
         MvcResult result = mockMvc.perform(
-                get("/fit-model/"+fitModel.getId())
+                get("/fit-model/" + fitModel.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
-        assertThat(content, is(objectMapper.writeValueAsString(fitModel)) );
+        assertThat(content, is(objectMapper.writeValueAsString(fitModel)));
+    }
+
+    @Test
+    public void shouldUpdateFitModel() throws Exception {
+        ObjectId id = new ObjectId();
+        fitModel.setId(id.toString());
+
+        FitModel updatedFitModel = new FitModel();
+
+        BeanUtils.copyProperties(fitModel, updatedFitModel);
+        updatedFitModel.setName("Ana Carolina");
+        updatedFitModel.setPhoneNumber("58993249582");
+
+        when(fitModelService.update(any(), any())).thenReturn(updatedFitModel);
+        when(fitModelService.get(any())).thenReturn(fitModel);
+
+        MvcResult result = mockMvc.perform(
+                put("/fit-model/" + fitModel.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedFitModel)))
+                .andExpect(status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        assertThat(content, containsString("\"id\":\"" + fitModel.getId() + "\""));
+        assertThat(content, containsString("\"name\":\"Ana Carolina\""));
+        assertThat(content, containsString("\"phoneNumber\":\"58993249582\""));
+
+        verify(fitModelService, times(1)).get(any());
+        verify(fitModelService, times(1)).update(any(), any());
+        verifyNoMoreInteractions(fitModelService);
     }
 
     public void populateValidFitModel() {

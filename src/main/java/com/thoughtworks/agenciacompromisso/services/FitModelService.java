@@ -26,4 +26,9 @@ public class FitModelService {
     public FitModel get(ObjectId id) {
         return fitModelRepository.findById(id);
     }
+
+    public FitModel update(FitModel updatedFitModel, ObjectId id) {
+        updatedFitModel.setId(id.toString());
+        return fitModelRepository.save(updatedFitModel);
+    }
 }

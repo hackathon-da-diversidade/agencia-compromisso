@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -86,6 +87,26 @@ public class FitModelServiceTest {
 
         assertThat(fitModelReturned, is(fitModel));
 
+    }
+
+    @Test
+    public void shouldUpdateFitModel() {
+        ObjectId id = new ObjectId();
+        fitModel.setId(id.toString());
+
+        FitModel updatedFitModel = new FitModel();
+
+        BeanUtils.copyProperties(fitModel, updatedFitModel);
+        updatedFitModel.setName("Ana Carolina");
+        updatedFitModel.setPhoneNumber("58993249582");
+
+        when(fitModelRepository.save(any())).thenReturn(updatedFitModel);
+
+        FitModel fitModelReturned = fitModelService.update(updatedFitModel, id);
+
+        assertThat(fitModelReturned.getName(), is(updatedFitModel.getName()));
+        assertThat(fitModelReturned.getPhoneNumber(), is(updatedFitModel.getPhoneNumber()));
+        assertThat(fitModelReturned.getId(), is(updatedFitModel.getId()));
     }
 
 }
