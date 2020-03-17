@@ -51,7 +51,8 @@ public class FitModelController {
         FitModel fitModel = fitModelService.get(id);
 
         if (!fitModel.getName().isEmpty()) {
-            BeanUtils.copyProperties(fitModel, updatedFitModel);
+            BeanUtils.copyProperties(updatedFitModel, fitModel);
+
             FitModel res = fitModelService.update(fitModel, id);
             return ResponseEntity.ok().body(res);
         } else {
