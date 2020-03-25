@@ -8,13 +8,14 @@ public class Sizes {
     private Double totalWaistCircumference;
     private Double totalHipCircumference;
     private Double height;
+    private String shirtSize;
 
-
-    public Sizes(Double totalBustCircumference, Double totalWaistCircumference, Double totalHipCircumference, Double height) {
+    public Sizes(Double totalBustCircumference, Double totalWaistCircumference, Double totalHipCircumference, Double height, String shirtSize) {
         this.totalBustCircumference = totalBustCircumference;
         this.totalWaistCircumference = totalWaistCircumference;
         this.totalHipCircumference = totalHipCircumference;
         this.height = height;
+        this.shirtSize = shirtSize;
     }
 
     public Double getTotalWaistCircumference() {
@@ -47,5 +48,9 @@ public class Sizes {
 
     public void setTotalBustCircumference(Double totalBustCircumference) {
         this.totalBustCircumference = totalBustCircumference;
+    }
+
+    public String getShirtSize() {
+        return shirtSize;
     }
 }

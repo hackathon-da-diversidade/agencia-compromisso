@@ -59,16 +59,16 @@ public class FitModelTest {
         assertFalse(isInvalid(fitModel));
     }
 
-
     private FitModel getValidFitModel() {
         FitModel fitModel = new FitModel();
         fitModel.setName("João da Silva");
+        fitModel.setGenderExpression(GenderExpression.MALE);
+        fitModel.setSizes(new Sizes(100.0, 90.0, 120.0, 170.0, "M"));
         fitModel.setBirthday(LocalDate.of(1990, 12, 14));
         fitModel.setAvailability(Availability.MORNING);
         fitModel.setNotes("obs");
         return fitModel;
     }
-
 
     private Boolean isInvalid(FitModel fitModel) {
         Set<ConstraintViolation<FitModel>> violations = validator.validate(fitModel);
