@@ -126,7 +126,7 @@ public class FitModelControllerTest {
         fitModel.setName("Maria dos Santos");
         fitModel.setPhoneNumber("(51)999111111");
         fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "M"));
+        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
         fitModel.setBirthday(LocalDate.parse("2008-12-10"));
         fitModel.setAddress("Avenida Ipiranga, 1963, Porto Alegre");
         fitModel.setAvailability(Availability.AFTERNOON);
