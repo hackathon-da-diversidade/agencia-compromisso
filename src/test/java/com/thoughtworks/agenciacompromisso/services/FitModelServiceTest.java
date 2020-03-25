@@ -40,7 +40,7 @@ public class FitModelServiceTest {
         fitModel.setName("Maria");
         fitModel.setPhoneNumber("51999111111");
         fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "M"));
+        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "G"));
         fitModel.setBirthday(LocalDate.of(1990, 2, 11));
 
     }
