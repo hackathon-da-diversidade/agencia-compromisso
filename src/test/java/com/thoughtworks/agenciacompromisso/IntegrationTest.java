@@ -33,7 +33,7 @@ public class IntegrationTest {
         fitModel.setName("Maria");
         fitModel.setPhoneNumber("51999111111");
         fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0));
+        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "M"));
     }
 
     @DisplayName("given new fit-model is registered when saving object in db then object is saved with an id")
