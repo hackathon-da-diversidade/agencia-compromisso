@@ -10,14 +10,17 @@ public class Sizes {
     private Double height;
     private String shirtSize;
     private int pantsSize;
+    private int shoeSize;
 
-    public Sizes(Double totalBustCircumference, Double totalWaistCircumference, Double totalHipCircumference, Double height, String shirtSize,  int pantsSize) {
+
+    public Sizes(Double totalBustCircumference, Double totalWaistCircumference, Double totalHipCircumference, Double height, String shirtSize,  int pantsSize, int shoeSize) {
         this.totalBustCircumference = totalBustCircumference;
         this.totalWaistCircumference = totalWaistCircumference;
         this.totalHipCircumference = totalHipCircumference;
         this.height = height;
         this.shirtSize = shirtSize;
         this.pantsSize = pantsSize;
+        this.shoeSize = shoeSize;
     }
 
     public Double getTotalWaistCircumference() {
