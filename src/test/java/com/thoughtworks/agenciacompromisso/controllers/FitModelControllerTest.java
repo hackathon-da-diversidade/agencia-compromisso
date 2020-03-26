@@ -85,13 +85,13 @@ public class FitModelControllerTest {
 
         MvcResult result = mockMvc.perform(
                 get("/fit-model")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
         assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
-        assertThat(content, containsString("\"id\":\"" + id + "\""));
+        assertThat(content, containsString("\"id\":\""+id+"\""));
         assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
         assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
     }
@@ -103,7 +103,7 @@ public class FitModelControllerTest {
         when(fitModelService.get(any())).thenReturn(fitModel);
 
         MvcResult result = mockMvc.perform(
-                get("/fit-model/" + fitModel.getId())
+                get("/fit-model/"+fitModel.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
@@ -157,7 +157,7 @@ public class FitModelControllerTest {
         fitModel.setName("Maria dos Santos");
         fitModel.setPhoneNumber("(51)999111111");
         fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "G"));
+        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "M", 42));
         fitModel.setBirthday(LocalDate.parse("2008-12-10"));
         fitModel.setAddress("Avenida Ipiranga, 1963, Porto Alegre");
         fitModel.setAvailability(Availability.AFTERNOON);
