@@ -19,12 +19,16 @@ public class Sizes {
     @NotNull
     private String shirtSize;
 
-    public Sizes(@NotNull Double totalBustCircumference, @NotNull Double totalWaistCircumference, @NotNull Double totalHipCircumference, @NotNull Double height, @NotNull String shirtSize) {
+    @NotNull
+    private int pantsSize;
+
+    public Sizes(@NotNull Double totalBustCircumference, @NotNull Double totalWaistCircumference, @NotNull Double totalHipCircumference, @NotNull Double height, @NotNull String shirtSize, @NotNull int pantsSize) {
         this.totalBustCircumference = totalBustCircumference;
         this.totalWaistCircumference = totalWaistCircumference;
         this.totalHipCircumference = totalHipCircumference;
         this.height = height;
         this.shirtSize = shirtSize;
+        this.pantsSize = pantsSize;
     }
 
     public Double getTotalWaistCircumference() {
@@ -62,4 +66,6 @@ public class Sizes {
     public String getShirtSize() {
         return shirtSize;
     }
+
+    public int getPantsSize() { return pantsSize; }
 }
