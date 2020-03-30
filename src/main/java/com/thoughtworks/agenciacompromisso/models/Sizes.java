@@ -1,7 +1,5 @@
 package com.thoughtworks.agenciacompromisso.models;
 
-import javax.validation.constraints.NotNull;
-
 public class Sizes {
 
     private Double totalBustCircumference;

@@ -28,11 +28,9 @@ public class FitModel {
     @JsonView(View.List.class)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @NotNull
     @Past
     private LocalDate birthday;
 
-    @NotNull
     private Availability availability;
 
     @JsonView(View.List.class)

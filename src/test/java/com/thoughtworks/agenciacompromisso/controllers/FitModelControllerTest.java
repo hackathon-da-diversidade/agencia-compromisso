@@ -169,3 +169,4 @@ public class FitModelControllerTest {
         fitModel.setSocialInformation(socialInformation);
     }
 }
+
