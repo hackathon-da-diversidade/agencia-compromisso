@@ -60,4 +60,8 @@ public class Sizes {
     }
 
     public int getPantsSize() { return pantsSize; }
+
+    public int getShoeSize() {
+        return shoeSize;
+    }
 }
