@@ -21,6 +21,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -109,4 +110,23 @@ public class FitModelServiceTest {
         assertThat(fitModelReturned.getId(), is(updatedFitModel.getId()));
     }
 
+    @Test
+    public void searchFitModelByName() {
+        String name = "Name";
+
+        FitModel fitModel = new FitModel();
+        fitModel.setId("1");
+        fitModel.setName(name);
+
+        List<FitModel> fitModels = new ArrayList<>();
+        fitModels.add(fitModel);
+
+        when(fitModelRepository.findByName(name)).thenReturn(fitModels);
+
+        List<FitModel> results = fitModelService.search(name);
+
+        verify(fitModelRepository).findByName(name);
+
+        assertThat(results, is(fitModels));
+    }
 }

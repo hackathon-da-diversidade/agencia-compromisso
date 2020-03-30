@@ -33,6 +33,6 @@ public class FitModelService {
     }
 
     public List<FitModel> search(String name) {
-        return null;
+        return fitModelRepository.findByName(name);
     }
 }
