@@ -85,13 +85,13 @@ public class FitModelControllerTest {
 
         MvcResult result = mockMvc.perform(
                 get("/fit-model")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
         assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
-        assertThat(content, containsString("\"id\":\""+id+"\""));
+        assertThat(content, containsString("\"id\":\"" + id + "\""));
         assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
         assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
     }
@@ -103,7 +103,7 @@ public class FitModelControllerTest {
         when(fitModelService.get(any())).thenReturn(fitModel);
 
         MvcResult result = mockMvc.perform(
-                get("/fit-model/"+fitModel.getId())
+                get("/fit-model/" + fitModel.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
