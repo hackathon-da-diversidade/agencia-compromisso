@@ -1,5 +1,6 @@
 package com.thoughtworks.agenciacompromisso.models;
 
+import com.thoughtworks.agenciacompromisso.models.enums.Availability;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,15 +48,15 @@ public class FitModelTest {
     }
 
     @Test
-    public void shouldReturnInvalidWhenFitModelGenderExpressionIsNotSet() {
+    public void shouldReturnValidWhenFitModelGenderExpressionIsNotSet() {
         fitModel.setGenderExpression(null);
-        assertTrue(isInvalid(fitModel));
+        assertFalse(isInvalid(fitModel));
     }
 
     @Test
-    public void shouldReturnInvalidWhenFitModelSizesAreNotSet() {
+    public void shouldReturnValidWhenFitModelSizesAreNotSet() {
         fitModel.setSizes(null);
-        assertTrue(isInvalid(fitModel));
+        assertFalse(isInvalid(fitModel));
     }
 
 
@@ -63,9 +64,10 @@ public class FitModelTest {
         FitModel fitModel = new FitModel();
         fitModel.setName("João da Silva");
         fitModel.setGenderExpression(GenderExpression.MALE);
-        fitModel.setSizes(new Sizes(100.0, 90.0, 120.0, 170.0,  "M", 42, 40));
+        fitModel.setSizes(new Sizes(100.0, 90.0, 120.0, 170.0, "M", 42, 40));
         fitModel.setBirthday(LocalDate.of(1990, 12, 14));
         fitModel.setNotes("obs");
+        fitModel.setAvailability(Availability.MORNING);
         return fitModel;
     }
 
