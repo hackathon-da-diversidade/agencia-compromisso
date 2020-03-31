@@ -1,32 +1,19 @@
 package com.thoughtworks.agenciacompromisso.models;
 
-import javax.validation.constraints.NotNull;
-
 public class Sizes {
 
-    @NotNull
     private Double totalBustCircumference;
-
-    @NotNull
     private Double totalWaistCircumference;
-
-    @NotNull
     private Double totalHipCircumference;
-
-    @NotNull
     private Double height;
-
-    @NotNull
     private String shirtSize;
-
-    @NotNull
     private int pantsSize;
-
-    @NotNull
     private int shoeSize;
 
-    public Sizes(@NotNull Double totalBustCircumference, @NotNull Double totalWaistCircumference, @NotNull Double totalHipCircumference, @NotNull Double height, @NotNull String shirtSize, int pantsSize, int shoeSize) {
+    public Sizes() {
+    }
 
+    public Sizes(Double totalBustCircumference, Double totalWaistCircumference, Double totalHipCircumference, Double height, String shirtSize, int pantsSize, int shoeSize) {
         this.totalBustCircumference = totalBustCircumference;
         this.totalWaistCircumference = totalWaistCircumference;
         this.totalHipCircumference = totalHipCircumference;
@@ -76,5 +63,17 @@ public class Sizes {
 
     public int getShoeSize() {
         return shoeSize;
+    }
+
+    public void setShirtSize(String shirtSize) {
+        this.shirtSize = shirtSize;
+    }
+
+    public void setPantsSize(int pantsSize) {
+        this.pantsSize = pantsSize;
+    }
+
+    public void setShoeSize(int shoeSize) {
+        this.shoeSize = shoeSize;
     }
 }

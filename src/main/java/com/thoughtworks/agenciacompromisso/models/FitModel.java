@@ -28,9 +28,9 @@ public class FitModel {
     @JsonView(View.List.class)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @NotNull
     @Past
     private LocalDate birthday;
+
     private Availability availability;
 
     @JsonView(View.List.class)
@@ -40,14 +40,12 @@ public class FitModel {
     private String address;
 
     @JsonView(View.List.class)
-    @NotNull
     private GenderExpression genderExpression;
     private Education education;
     private String guardianName;
     @Pattern(regexp = "\\(\\d{2}\\)\\d{8,12}")
     private String guardianPhoneNumber;
 
-    @NotNull
     @Valid
     private Sizes sizes;
 
