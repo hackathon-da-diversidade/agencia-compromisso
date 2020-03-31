@@ -12,6 +12,6 @@ public interface FitModelRepository extends MongoRepository<FitModel, String> {
     @Query("{ 'id' : ?0}")
     FitModel findById(ObjectId id);
 
-    @Query("{ 'name': ?0 }")
+    @Query("{ 'name': {$regex:?0, $options:'i'} }")
     List<FitModel> findByName(String name);
 }
