@@ -93,7 +93,7 @@ public class FitModelControllerTest {
         assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
         assertThat(content, containsString("\"id\":\"" + id + "\""));
         assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
-        assertThat(content, not(containsString("\"telefone\":\"51999111111\"")));
+        assertThat(content, not(containsString("\"phoneNumber\":\"51999111111\"")));
     }
 
     @Test
