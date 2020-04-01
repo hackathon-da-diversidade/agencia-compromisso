@@ -34,7 +34,7 @@ public class FitModel {
     private Availability availability;
 
     @JsonView(View.List.class)
-    @Pattern(regexp = "\\(\\d{2}\\)\\d{8,12}")
+    @Pattern(regexp = "[(]?[0-9]{0,2}[)]?[0-9 /s]{8,10}")
     private String phoneNumber;
     private String projects;
     private String address;
@@ -43,7 +43,7 @@ public class FitModel {
     private GenderExpression genderExpression;
     private Education education;
     private String guardianName;
-    @Pattern(regexp = "\\(\\d{2}\\)\\d{8,12}")
+    @Pattern(regexp = "[(]?[0-9]{0,2}[)]?[0-9 /s]{8,10}")
     private String guardianPhoneNumber;
 
     @Valid
