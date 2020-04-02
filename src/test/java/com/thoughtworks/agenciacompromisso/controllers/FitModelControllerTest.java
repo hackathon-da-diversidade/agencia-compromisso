@@ -12,29 +12,36 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(FitModelController.class)
@@ -143,6 +150,20 @@ public class FitModelControllerTest {
         verifyNoMoreInteractions(fitModelService);
     }
 
+    @Test
+    public void shouldReturnFitModelPageWithList() throws Exception {
+        Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
+        when(fitModelService.findAllPage(any())).thenReturn(page);
+
+        mockMvc.perform(
+                get("/fit-model/paginated").param("page", "1").param("size", "5")
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)));
+
+        verify(fitModelService).findAllPage(any());
+    }
+
     public void populateValidFitModel() {
         SocialInformation socialInformation = new SocialInformation();
         socialInformation.setEthnicity(Ethnicity.PARDO);
@@ -168,5 +189,6 @@ public class FitModelControllerTest {
         fitModel.setProjects("Nome do Projeto");
         fitModel.setSocialInformation(socialInformation);
     }
+
 }
 

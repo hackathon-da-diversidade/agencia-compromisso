@@ -3,6 +3,8 @@ package com.thoughtworks.agenciacompromisso.services;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +15,10 @@ public class FitModelService {
 
     public FitModelService(FitModelRepository fitModelRepository) {
         this.fitModelRepository = fitModelRepository;
+    }
+
+    public Page<FitModel> findAllPage(Pageable pageable) {
+        return fitModelRepository.findAllPage(pageable);
     }
 
     public FitModel create(FitModel fitModel) {

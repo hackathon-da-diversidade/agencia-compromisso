@@ -7,6 +7,9 @@ import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
@@ -58,6 +61,11 @@ public class FitModelController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(path = "/paginated")
+    public Page<FitModel> loadFitModelPage(@PageableDefault(page = 0, size = 20) Pageable pageable) {
+        return fitModelService.findAllPage(pageable);
     }
 
 }

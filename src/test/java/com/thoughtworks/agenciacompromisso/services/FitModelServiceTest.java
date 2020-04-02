@@ -8,14 +8,19 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -87,6 +92,17 @@ public class FitModelServiceTest {
 
         assertThat(fitModelReturned, is(fitModel));
 
+    }
+
+    @Test
+    public void shouldFindAllPagesOfFitModel() {
+        Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+
+        when(fitModelRepository.findAllPage(any())).thenReturn(page);
+
+        Page<FitModel> fitModelPageReturned = fitModelService.findAllPage(pageableCaptor.capture());
+        assertThat(fitModelPageReturned, is(page));
     }
 
     @Test
