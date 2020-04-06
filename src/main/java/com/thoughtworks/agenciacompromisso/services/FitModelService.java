@@ -31,4 +31,8 @@ public class FitModelService {
         updatedFitModel.setId(id.toString());
         return fitModelRepository.save(updatedFitModel);
     }
+
+    public List<FitModel> search(String name) {
+        return fitModelRepository.findByName(name);
+    }
 }

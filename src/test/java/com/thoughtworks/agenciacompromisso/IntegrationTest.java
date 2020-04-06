@@ -63,4 +63,23 @@ public class IntegrationTest {
 
     }
 
+    @DisplayName("should find fit-model by name and return all information")
+    @Test
+    public void testFindByName() {
+        String name = "Name";
+
+        fitModel.setName(name);
+
+        repository.save(fitModel);
+
+        List<FitModel> returnedList = repository.findByName(name);
+
+        FitModel fitModelReturned = returnedList.get(0);
+
+        assertThat(returnedList.size()).isEqualTo(1);
+        assertThat(fitModelReturned.getName()).isEqualTo(name);
+        assertThat(fitModelReturned.getPhoneNumber()).isEqualTo(fitModel.getPhoneNumber());
+        assertThat(fitModelReturned.getGenderExpression()).isEqualTo(fitModel.getGenderExpression());
+        assertThat(fitModelReturned.getSizes().getHeight()).isEqualTo(fitModel.getSizes().getHeight());
+    }
 }

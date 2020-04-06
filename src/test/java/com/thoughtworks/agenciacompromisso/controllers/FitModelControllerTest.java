@@ -143,6 +143,31 @@ public class FitModelControllerTest {
         verifyNoMoreInteractions(fitModelService);
     }
 
+    @Test
+    public void searchFitModelByName() throws Exception {
+        String name = "Name";
+
+        FitModel fitModel = new FitModel();
+        fitModel.setId("1");
+        fitModel.setName(name);
+
+        List<FitModel> fitModels = new ArrayList<>();
+        fitModels.add(fitModel);
+
+        when(fitModelService.search(name)).thenReturn(fitModels);
+
+        MvcResult result = mockMvc.perform(
+                get("/fit-model/search").param("name", name)
+        ).andExpect(status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        assertThat(content, containsString("\"id\":\"" + fitModel.getId() + "\""));
+        assertThat(content, containsString("\"name\":\"" + name + "\""));
+
+        verify(fitModelService).search(name);
+    }
+
     public void populateValidFitModel() {
         SocialInformation socialInformation = new SocialInformation();
         socialInformation.setEthnicity(Ethnicity.PARDO);
