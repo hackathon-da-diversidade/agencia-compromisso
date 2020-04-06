@@ -33,6 +33,13 @@ public class FitModelController {
         return ResponseEntity.ok().body(fitModelList);
     }
 
+    @GetMapping("search")
+    @JsonView(View.List.class)
+    public ResponseEntity<List<FitModel>> search(@RequestParam("name") String name) {
+        List<FitModel> fitModels = fitModelService.search(name);
+        return ResponseEntity.ok(fitModels);
+    }
+
     @PostMapping
     public ResponseEntity create(UriComponentsBuilder uriComponentsBuilder, @RequestBody @Valid FitModel fitModel) {
 

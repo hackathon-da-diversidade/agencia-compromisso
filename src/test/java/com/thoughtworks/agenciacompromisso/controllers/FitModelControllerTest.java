@@ -12,7 +12,6 @@ import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -151,6 +147,31 @@ public class FitModelControllerTest {
     }
 
     @Test
+    public void searchFitModelByName() throws Exception {
+        String name = "Name";
+
+        FitModel fitModel = new FitModel();
+        fitModel.setId("1");
+        fitModel.setName(name);
+
+        List<FitModel> fitModels = new ArrayList<>();
+        fitModels.add(fitModel);
+
+        when(fitModelService.search(name)).thenReturn(fitModels);
+
+        MvcResult result = mockMvc.perform(
+                get("/fit-model/search").param("name", name)
+        ).andExpect(status().isOk()).andReturn();
+
+        String content = result.getResponse().getContentAsString();
+
+        assertThat(content, containsString("\"id\":\"" + fitModel.getId() + "\""));
+        assertThat(content, containsString("\"name\":\"" + name + "\""));
+
+        verify(fitModelService).search(name);
+    }
+
+    @Test
     public void shouldReturnFitModelPageWithList() throws Exception {
         Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
         when(fitModelService.findAllPage(any())).thenReturn(page);
@@ -189,6 +210,5 @@ public class FitModelControllerTest {
         fitModel.setProjects("Nome do Projeto");
         fitModel.setSocialInformation(socialInformation);
     }
-
 }
 
