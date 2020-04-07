@@ -18,7 +18,7 @@ public class FitModelService {
     }
 
     public Page<FitModel> findAllPage(Pageable pageable) {
-        return fitModelRepository.findAllPage(pageable);
+        return fitModelRepository.findAll(pageable);
     }
 
     public FitModel create(FitModel fitModel) {

@@ -71,7 +71,7 @@ public class FitModelController {
     }
 
     @GetMapping(path = "/paginated")
-    public Page<FitModel> loadFitModelPage(@PageableDefault(page = 0, size = 20) Pageable pageable) {
+    public Page<FitModel> loadFitModelPage(Pageable pageable) {
         return fitModelService.findAllPage(pageable);
     }
 

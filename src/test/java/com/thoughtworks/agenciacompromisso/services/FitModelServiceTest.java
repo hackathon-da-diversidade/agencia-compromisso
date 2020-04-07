@@ -99,10 +99,11 @@ public class FitModelServiceTest {
     public void shouldFindAllPagesOfFitModel() {
         Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
         ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+        Pageable capture = pageableCaptor.capture();
 
-        when(fitModelRepository.findAllPage(any())).thenReturn(page);
+        when(fitModelRepository.findAll(capture)).thenReturn(page);
 
-        Page<FitModel> fitModelPageReturned = fitModelService.findAllPage(pageableCaptor.capture());
+        Page<FitModel> fitModelPageReturned = fitModelService.findAllPage(capture);
         assertThat(fitModelPageReturned, is(page));
     }
 
