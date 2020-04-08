@@ -9,6 +9,7 @@ import com.thoughtworks.agenciacompromisso.models.SocialInformation;
 import com.thoughtworks.agenciacompromisso.models.enums.*;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -60,6 +61,10 @@ public class FitModelControllerTest {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
+    @AfterEach
+    public void tearDown() {
+        reset(fitModelService);
+    }
 
     @Test
     public void shouldReturnStatusCode201AndLocationHeaderWhenPostFitModel() throws Exception {
@@ -148,27 +153,23 @@ public class FitModelControllerTest {
 
     @Test
     public void searchFitModelByName() throws Exception {
-        String name = "Name";
-
         FitModel fitModel = new FitModel();
         fitModel.setId("1");
-        fitModel.setName(name);
+        fitModel.setName("Name");
 
-        List<FitModel> fitModels = new ArrayList<>();
-        fitModels.add(fitModel);
+        Page<FitModel> fitModelPage = new PageImpl<>(Collections.singletonList(fitModel));
 
-        when(fitModelService.search(name)).thenReturn(fitModels);
+        when(fitModelService.search(any(), any())).thenReturn(fitModelPage);
 
-        MvcResult result = mockMvc.perform(
-                get("/fit-model/search").param("name", name)
-        ).andExpect(status().isOk()).andReturn();
+        mockMvc.perform(
+                get("/fit-model/search").param("name", fitModel.getName())
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].id", is(fitModel.getId())))
+                .andExpect(jsonPath("$.content[0].name", is(fitModel.getName())));
 
-        String content = result.getResponse().getContentAsString();
-
-        assertThat(content, containsString("\"id\":\"" + fitModel.getId() + "\""));
-        assertThat(content, containsString("\"name\":\"" + name + "\""));
-
-        verify(fitModelService).search(name);
+        verify(fitModelService).search(any(), any());
     }
 
     @Test

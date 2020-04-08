@@ -38,7 +38,7 @@ public class FitModelService {
         return fitModelRepository.save(updatedFitModel);
     }
 
-    public List<FitModel> search(String name) {
-        return fitModelRepository.findByName(name);
+    public Page<FitModel> search(String name, Pageable pageable) {
+        return fitModelRepository.findByName(name, pageable);
     }
 }

@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -72,12 +75,14 @@ public class IntegrationTest {
 
         repository.save(fitModel);
 
-        List<FitModel> returnedList = repository.findByName(name);
+        Pageable pageable = PageRequest.of(0, 10);
 
-        FitModel fitModelReturned = returnedList.get(0);
+        Page<FitModel> returnedList = repository.findByName(fitModel.getName(), pageable);
 
-        assertThat(returnedList.size()).isEqualTo(1);
-        assertThat(fitModelReturned.getName()).isEqualTo(name);
+        FitModel fitModelReturned = returnedList.get().findFirst().orElse(new FitModel());
+
+        assertThat(returnedList.getTotalElements()).isEqualTo(1);
+        assertThat(fitModelReturned.getName()).isEqualTo(fitModel.getName());
         assertThat(fitModelReturned.getPhoneNumber()).isEqualTo(fitModel.getPhoneNumber());
         assertThat(fitModelReturned.getGenderExpression()).isEqualTo(fitModel.getGenderExpression());
         assertThat(fitModelReturned.getSizes().getHeight()).isEqualTo(fitModel.getSizes().getHeight());
