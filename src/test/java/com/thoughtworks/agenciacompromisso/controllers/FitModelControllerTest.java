@@ -9,6 +9,7 @@ import com.thoughtworks.agenciacompromisso.models.SocialInformation;
 import com.thoughtworks.agenciacompromisso.models.enums.*;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,17 +27,18 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(FitModelController.class)
@@ -57,6 +61,10 @@ public class FitModelControllerTest {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
+    @AfterEach
+    public void tearDown() {
+        reset(fitModelService);
+    }
 
     @Test
     public void shouldReturnStatusCode201AndLocationHeaderWhenPostFitModel() throws Exception {
@@ -145,27 +153,37 @@ public class FitModelControllerTest {
 
     @Test
     public void searchFitModelByName() throws Exception {
-        String name = "Name";
-
         FitModel fitModel = new FitModel();
         fitModel.setId("1");
-        fitModel.setName(name);
+        fitModel.setName("Name");
 
-        List<FitModel> fitModels = new ArrayList<>();
-        fitModels.add(fitModel);
+        Page<FitModel> fitModelPage = new PageImpl<>(Collections.singletonList(fitModel));
 
-        when(fitModelService.search(name)).thenReturn(fitModels);
+        when(fitModelService.search(any(), any())).thenReturn(fitModelPage);
 
-        MvcResult result = mockMvc.perform(
-                get("/fit-model/search").param("name", name)
-        ).andExpect(status().isOk()).andReturn();
+        mockMvc.perform(
+                get("/fit-model/search").param("name", fitModel.getName())
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)))
+                .andExpect(jsonPath("$.content[0].id", is(fitModel.getId())))
+                .andExpect(jsonPath("$.content[0].name", is(fitModel.getName())));
 
-        String content = result.getResponse().getContentAsString();
+        verify(fitModelService).search(any(), any());
+    }
 
-        assertThat(content, containsString("\"id\":\"" + fitModel.getId() + "\""));
-        assertThat(content, containsString("\"name\":\"" + name + "\""));
+    @Test
+    public void shouldReturnFitModelPageWithList() throws Exception {
+        Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
+        when(fitModelService.findAllPage(any())).thenReturn(page);
 
-        verify(fitModelService).search(name);
+        mockMvc.perform(
+                get("/fit-model/paginated").param("page", "1").param("size", "5")
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(1)));
+
+        verify(fitModelService).findAllPage(any());
     }
 
     public void populateValidFitModel() {

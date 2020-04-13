@@ -5,24 +5,29 @@ import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -44,7 +49,11 @@ public class FitModelServiceTest {
         fitModel.setGenderExpression(GenderExpression.FEMALE);
         fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "M", 42, 40));
         fitModel.setBirthday(LocalDate.of(1990, 2, 11));
+    }
 
+    @AfterEach
+    public void tearDown() {
+        reset(fitModelRepository);
     }
 
     @Test
@@ -91,6 +100,18 @@ public class FitModelServiceTest {
     }
 
     @Test
+    public void shouldFindAllPagesOfFitModel() {
+        Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+        Pageable capture = pageableCaptor.capture();
+
+        when(fitModelRepository.findAll(capture)).thenReturn(page);
+
+        Page<FitModel> fitModelPageReturned = fitModelService.findAllPage(capture);
+        assertThat(fitModelPageReturned, is(page));
+    }
+
+    @Test
     public void shouldUpdateFitModel() {
         ObjectId id = new ObjectId();
         fitModel.setId(id.toString());
@@ -112,21 +133,20 @@ public class FitModelServiceTest {
 
     @Test
     public void searchFitModelByName() {
+        Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
+
         String name = "Name";
 
         FitModel fitModel = new FitModel();
         fitModel.setId("1");
         fitModel.setName(name);
 
-        List<FitModel> fitModels = new ArrayList<>();
-        fitModels.add(fitModel);
+        when(fitModelRepository.findByName(any(), any())).thenReturn(page);
 
-        when(fitModelRepository.findByName(name)).thenReturn(fitModels);
+        Page<FitModel> results = fitModelService.search(any(), any());
 
-        List<FitModel> results = fitModelService.search(name);
+        verify(fitModelRepository).findByName(any(), any());
 
-        verify(fitModelRepository).findByName(name);
-
-        assertThat(results, is(fitModels));
+        assertThat(results, is(page));
     }
 }

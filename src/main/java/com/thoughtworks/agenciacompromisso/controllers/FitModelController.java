@@ -7,6 +7,8 @@ import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
@@ -31,10 +33,8 @@ public class FitModelController {
     }
 
     @GetMapping("search")
-    @JsonView(View.List.class)
-    public ResponseEntity<List<FitModel>> search(@RequestParam("name") String name) {
-        List<FitModel> fitModels = fitModelService.search(name);
-        return ResponseEntity.ok(fitModels);
+    public Page<FitModel> search(Pageable pageable, @RequestParam("name") String name) {
+        return fitModelService.search(name, pageable);
     }
 
     @PostMapping
@@ -65,6 +65,11 @@ public class FitModelController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(path = "/paginated")
+    public Page<FitModel> loadFitModelPage(Pageable pageable) {
+        return fitModelService.findAllPage(pageable);
     }
 
 }
