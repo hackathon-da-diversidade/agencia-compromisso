@@ -1,5 +1,7 @@
 package com.thoughtworks.agenciacompromisso.models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thoughtworks.agenciacompromisso.models.enums.Availability;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +15,10 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FitModelTest {
 
@@ -27,7 +31,6 @@ public class FitModelTest {
         validator = factory.getValidator();
         fitModel = getValidFitModel();
     }
-
 
     @Test
     public void shouldNotBeInvalidWhenEverythingIsSet() {
@@ -57,6 +60,18 @@ public class FitModelTest {
     public void shouldReturnValidWhenFitModelSizesAreNotSet() {
         fitModel.setSizes(null);
         assertFalse(isInvalid(fitModel));
+    }
+
+    @Test
+    public void shouldReturnNullOnLGBTQIAFieldIfNotSet() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        String objAsStr = mapper.writeValueAsString(fitModel);
+
+        System.out.println(objAsStr);
+
+        assertThat(objAsStr, containsString("João da Silva"));
+        assertThat(objAsStr, not(containsString("LGBTQIA+")));
     }
 
 

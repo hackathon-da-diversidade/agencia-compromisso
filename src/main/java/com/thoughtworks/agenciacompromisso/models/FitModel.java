@@ -1,6 +1,8 @@
 package com.thoughtworks.agenciacompromisso.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.thoughtworks.agenciacompromisso.models.enums.Availability;
 import com.thoughtworks.agenciacompromisso.models.enums.Education;
@@ -50,6 +52,8 @@ public class FitModel {
 
     @Valid
     private SocialInformation socialInformation;
+
+    @JsonInclude(Include.NON_NULL)
     private boolean identifyAsLGBTQIA;
 
     private String notes;
@@ -159,7 +163,7 @@ public class FitModel {
         return this.socialInformation;
     }
 
-    public boolean isIdentifyAsLGBTQIA() {
+    public boolean identifyAsLGBTQIA() {
         return identifyAsLGBTQIA;
     }
 
