@@ -16,6 +16,7 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
+@JsonInclude(Include.NON_NULL)
 public class FitModel {
     @Id
     @JsonView(View.List.class)
@@ -53,7 +54,6 @@ public class FitModel {
     @Valid
     private SocialInformation socialInformation;
 
-    @JsonInclude(Include.NON_NULL)
     private boolean identifyAsLGBTQIA;
 
     private String notes;
