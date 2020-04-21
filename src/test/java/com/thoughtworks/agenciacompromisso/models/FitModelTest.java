@@ -68,10 +68,28 @@ public class FitModelTest {
 
         String objAsStr = mapper.writeValueAsString(fitModel);
 
-        System.out.println(objAsStr);
-
         assertThat(objAsStr, containsString("João da Silva"));
-        assertThat(objAsStr, not(containsString("LGBTQIA+")));
+        assertThat(objAsStr, not(containsString("identifyAsLGBTQIA")));
+    }
+
+    @Test
+    public void shouldSetLGBTQIAFieldAsTrue() throws JsonProcessingException {
+        fitModel.setIdentifyAsLGBTQIA(true);
+        ObjectMapper mapper = new ObjectMapper();
+        String objAsStr = mapper.writeValueAsString(fitModel);
+
+        assertThat(objAsStr, containsString("\"identifyAsLGBTQIA\":true"));
+
+    }
+
+    @Test
+    public void shouldSetLGBTQIAFieldAsFalse() throws JsonProcessingException {
+        fitModel.setIdentifyAsLGBTQIA(false);
+        ObjectMapper mapper = new ObjectMapper();
+        String objAsStr = mapper.writeValueAsString(fitModel);
+
+        assertThat(objAsStr, containsString("\"identifyAsLGBTQIA\":false"));
+
     }
 
 

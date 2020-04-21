@@ -54,8 +54,7 @@ public class FitModel {
     @Valid
     private SocialInformation socialInformation;
 
-    private boolean identifyAsLGBTQIA;
-
+    private Boolean identifyAsLGBTQIA;
     private String notes;
 
 
@@ -163,11 +162,11 @@ public class FitModel {
         return this.socialInformation;
     }
 
-    public boolean identifyAsLGBTQIA() {
+    public Boolean getIdentifyAsLGBTQIA() {
         return identifyAsLGBTQIA;
     }
 
-    public void setIdentifyAsLGBTQIA(boolean identifyAsLGBTQIA) {
+    public void setIdentifyAsLGBTQIA(Boolean identifyAsLGBTQIA) {
         this.identifyAsLGBTQIA = identifyAsLGBTQIA;
     }
 
