@@ -51,10 +51,8 @@ public class FitModelController {
         return ResponseEntity.ok().body(fitModel);
     }
 
-
     @PutMapping(value = "/{id}")
-    public ResponseEntity update(@PathVariable("id") ObjectId id, @RequestBody FitModel updatedFitModel) {
-
+    public ResponseEntity<FitModel> update(@PathVariable("id") ObjectId id, @RequestBody FitModel updatedFitModel) {
         FitModel fitModel = fitModelService.get(id);
 
         if (!fitModel.getName().isEmpty()) {
