@@ -19,6 +19,10 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle test
+      - run: gradle jacocoTestReport
+      - run: bash <(curl -s https://codecov.io/bash)
+
+
   deploy-staging:
     docker:
       - image: buildpack-deps:trusty
