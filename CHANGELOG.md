@@ -7,6 +7,9 @@ e este projeto segue o padrão de [Versionamento Semântico](https://semver.org/
 
 ## Unreleased
 
+### Added
+- Codecov + CircleCI status badge [#46](https://github.com/hackathon-da-diversidade/agencia-compromisso/pull/46)
+
 ## [1.0.0] - 2020-05-21
 
 ### Added
