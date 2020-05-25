@@ -1,9 +1,9 @@
 package com.thoughtworks.agenciacompromisso;
 
-import com.thoughtworks.agenciacompromisso.models.FitModel;
+import com.thoughtworks.agenciacompromisso.models.Candidate;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
-import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
+import com.thoughtworks.agenciacompromisso.repositories.CandidateRepository;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,65 +26,65 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IntegrationTest {
 
     @Autowired
-    private FitModelRepository repository;
+    private CandidateRepository repository;
 
-    private FitModel fitModel;
+    private Candidate candidate;
 
     @BeforeEach
     public void setUp() {
-        fitModel = new FitModel();
-        fitModel.setName("Maria");
-        fitModel.setPhoneNumber("51999111111");
-        fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0,"M", 42,40));
+        candidate = new Candidate();
+        candidate.setName("Maria");
+        candidate.setPhoneNumber("51999111111");
+        candidate.setGenderExpression(GenderExpression.FEMALE);
+        candidate.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0,"M", 42,40));
     }
 
-    @DisplayName("given new fit-model is registered when saving object in db then object is saved with an id")
+    @DisplayName("given new candidate is registered when saving object in db then object is saved with an id")
     @Test
     public void testSave() {
-        repository.save(fitModel);
+        repository.save(candidate);
 
-        List<FitModel> returnedList = repository.findAll();
+        List<Candidate> returnedList = repository.findAll();
         assertThat(returnedList.get(0).getId()).isNotEmpty();
         assertThat(repository.findAll().size()).isEqualTo(1);
     }
 
-    @DisplayName("should find fit-model by id and return all information")
+    @DisplayName("should find candidate by id and return all information")
     @Test
     public void testFindById() {
-        repository.save(fitModel);
-        List<FitModel> returnedList = repository.findAll();
+        repository.save(candidate);
+        List<Candidate> returnedList = repository.findAll();
         String id = returnedList.get(0).getId();
 
-        FitModel fitModelReturned = repository.findById(new ObjectId(id));
+        Candidate candidateReturned = repository.findById(new ObjectId(id));
 
-        assertThat(fitModelReturned.getName()).isEqualTo(fitModel.getName());
-        assertThat(fitModelReturned.getPhoneNumber()).isEqualTo(fitModel.getPhoneNumber());
-        assertThat(fitModelReturned.getGenderExpression()).isEqualTo(fitModel.getGenderExpression());
-        assertThat(fitModelReturned.getSizes().getHeight()).isEqualTo(fitModel.getSizes().getHeight());
-        assertThat(fitModelReturned.getSizes().getShirtSize()).isEqualTo(fitModel.getSizes().getShirtSize());
+        assertThat(candidateReturned.getName()).isEqualTo(candidate.getName());
+        assertThat(candidateReturned.getPhoneNumber()).isEqualTo(candidate.getPhoneNumber());
+        assertThat(candidateReturned.getGenderExpression()).isEqualTo(candidate.getGenderExpression());
+        assertThat(candidateReturned.getSizes().getHeight()).isEqualTo(candidate.getSizes().getHeight());
+        assertThat(candidateReturned.getSizes().getShirtSize()).isEqualTo(candidate.getSizes().getShirtSize());
 
     }
 
-    @DisplayName("should find fit-model by name and return all information")
+    @DisplayName("should find candidate by name and return all information")
     @Test
     public void testFindByName() {
         String name = "Name";
 
-        fitModel.setName(name);
+        candidate.setName(name);
 
-        repository.save(fitModel);
+        repository.save(candidate);
 
         Pageable pageable = PageRequest.of(0, 10);
 
-        Page<FitModel> returnedList = repository.findByName(fitModel.getName(), pageable);
+        Page<Candidate> returnedList = repository.findByName(candidate.getName(), pageable);
 
-        FitModel fitModelReturned = returnedList.get().findFirst().orElse(new FitModel());
+        Candidate candidateReturned = returnedList.get().findFirst().orElse(new Candidate());
 
         assertThat(returnedList.getTotalElements()).isEqualTo(1);
-        assertThat(fitModelReturned.getName()).isEqualTo(fitModel.getName());
-        assertThat(fitModelReturned.getPhoneNumber()).isEqualTo(fitModel.getPhoneNumber());
-        assertThat(fitModelReturned.getGenderExpression()).isEqualTo(fitModel.getGenderExpression());
-        assertThat(fitModelReturned.getSizes().getHeight()).isEqualTo(fitModel.getSizes().getHeight());
+        assertThat(candidateReturned.getName()).isEqualTo(candidate.getName());
+        assertThat(candidateReturned.getPhoneNumber()).isEqualTo(candidate.getPhoneNumber());
+        assertThat(candidateReturned.getGenderExpression()).isEqualTo(candidate.getGenderExpression());
+        assertThat(candidateReturned.getSizes().getHeight()).isEqualTo(candidate.getSizes().getHeight());
     }
 }
