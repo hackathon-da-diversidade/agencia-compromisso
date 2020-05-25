@@ -20,53 +20,53 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FitModelTest {
+public class CandidateTest {
 
     private Validator validator;
-    private FitModel fitModel;
+    private Candidate candidate;
 
     @BeforeEach
     public void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-        fitModel = getValidFitModel();
+        candidate = getValidCandidate();
     }
 
     @Test
     public void shouldNotBeInvalidWhenEverythingIsSet() {
-        assertFalse(isInvalid(fitModel));
+        assertFalse(isInvalid(candidate));
     }
 
     @Test
-    public void shouldReturnInvalidWhenFitModelNameContainsNumbers() {
-        fitModel.setName("João 123 da Silva");
-        assertTrue(isInvalid(fitModel));
+    public void shouldReturnInvalidWhenCandidateNameContainsNumbers() {
+        candidate.setName("João 123 da Silva");
+        assertTrue(isInvalid(candidate));
     }
 
     @Test
-    public void shouldReturnInvalidWhenFitModelBirthdayIsNotAPastDate() {
+    public void shouldReturnInvalidWhenCandidateBirthdayIsNotAPastDate() {
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        fitModel.setBirthday(tomorrow);
-        assertTrue(isInvalid(fitModel));
+        candidate.setBirthday(tomorrow);
+        assertTrue(isInvalid(candidate));
     }
 
     @Test
-    public void shouldReturnValidWhenFitModelGenderExpressionIsNotSet() {
-        fitModel.setGenderExpression(null);
-        assertFalse(isInvalid(fitModel));
+    public void shouldReturnValidWhenCandidateGenderExpressionIsNotSet() {
+        candidate.setGenderExpression(null);
+        assertFalse(isInvalid(candidate));
     }
 
     @Test
-    public void shouldReturnValidWhenFitModelSizesAreNotSet() {
-        fitModel.setSizes(null);
-        assertFalse(isInvalid(fitModel));
+    public void shouldReturnValidWhenCandidateSizesAreNotSet() {
+        candidate.setSizes(null);
+        assertFalse(isInvalid(candidate));
     }
 
     @Test
     public void shouldReturnNullOnLGBTQIAFieldIfNotSet() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
-        String objAsStr = mapper.writeValueAsString(fitModel);
+        String objAsStr = mapper.writeValueAsString(candidate);
 
         assertThat(objAsStr, containsString("João da Silva"));
         assertThat(objAsStr, not(containsString("identifyAsLGBTQIA")));
@@ -74,9 +74,9 @@ public class FitModelTest {
 
     @Test
     public void shouldSetLGBTQIAFieldAsTrue() throws JsonProcessingException {
-        fitModel.setIdentifyAsLGBTQIA(true);
+        candidate.setIdentifyAsLGBTQIA(true);
         ObjectMapper mapper = new ObjectMapper();
-        String objAsStr = mapper.writeValueAsString(fitModel);
+        String objAsStr = mapper.writeValueAsString(candidate);
 
         assertThat(objAsStr, containsString("\"identifyAsLGBTQIA\":true"));
 
@@ -84,29 +84,29 @@ public class FitModelTest {
 
     @Test
     public void shouldSetLGBTQIAFieldAsFalse() throws JsonProcessingException {
-        fitModel.setIdentifyAsLGBTQIA(false);
+        candidate.setIdentifyAsLGBTQIA(false);
         ObjectMapper mapper = new ObjectMapper();
-        String objAsStr = mapper.writeValueAsString(fitModel);
+        String objAsStr = mapper.writeValueAsString(candidate);
 
         assertThat(objAsStr, containsString("\"identifyAsLGBTQIA\":false"));
 
     }
 
 
-    private FitModel getValidFitModel() {
-        FitModel fitModel = new FitModel();
-        fitModel.setName("João da Silva");
-        fitModel.setGenderExpression(GenderExpression.MALE);
-        fitModel.setSizes(new Sizes(100.0, 90.0, 120.0, 170.0, "M", 42, 40));
-        fitModel.setBirthday(LocalDate.of(1990, 12, 14));
-        fitModel.setNotes("obs");
-        fitModel.setAvailability(Availability.MORNING);
-        return fitModel;
+    private Candidate getValidCandidate() {
+        Candidate candidate = new Candidate();
+        candidate.setName("João da Silva");
+        candidate.setGenderExpression(GenderExpression.MALE);
+        candidate.setSizes(new Sizes(100.0, 90.0, 120.0, 170.0, "M", 42, 40));
+        candidate.setBirthday(LocalDate.of(1990, 12, 14));
+        candidate.setNotes("obs");
+        candidate.setAvailability(Availability.MORNING);
+        return candidate;
     }
 
 
-    private Boolean isInvalid(FitModel fitModel) {
-        Set<ConstraintViolation<FitModel>> violations = validator.validate(fitModel);
+    private Boolean isInvalid(Candidate candidate) {
+        Set<ConstraintViolation<Candidate>> violations = validator.validate(candidate);
         return !violations.isEmpty();
     }
 }

@@ -17,7 +17,7 @@ import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @JsonInclude(Include.NON_NULL)
-public class FitModel {
+public class Candidate {
     @Id
     @JsonView(View.List.class)
     private String id;

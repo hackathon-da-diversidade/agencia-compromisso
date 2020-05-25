@@ -3,13 +3,14 @@ package com.thoughtworks.agenciacompromisso.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.thoughtworks.agenciacompromisso.models.Candidate;
 import com.thoughtworks.agenciacompromisso.exceptions.CandidateNotFoundException;
-import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.SocialInformation;
 import com.thoughtworks.agenciacompromisso.models.enums.*;
-import com.thoughtworks.agenciacompromisso.services.FitModelService;
+import com.thoughtworks.agenciacompromisso.services.CandidateService;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -40,147 +41,152 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(FitModelController.class)
-public class FitModelControllerTest {
+@WebMvcTest(CandidateController.class)
+public class CandidateControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private FitModelService fitModelService;
+    private CandidateService candidateService;
 
-    private FitModel fitModel;
+    private Candidate candidate;
     private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() {
-        populateValidFitModel();
+        populateValidCandidate();
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
-    @Test
-    public void shouldReturnStatusCode201AndLocationHeaderWhenPostFitModel() throws Exception {
-        FitModel fitModelReturned = new FitModel();
-        fitModelReturned.setId(new ObjectId().toString());
+    @AfterEach
+    public void tearDown() {
+        reset(candidateService);
+    }
 
-        when(fitModelService.create(ArgumentMatchers.any())).thenReturn(fitModelReturned);
+    @Test
+    public void shouldReturnStatusCode201AndLocationHeaderWhenPostCandidate() throws Exception {
+        Candidate candidateReturned = new Candidate();
+        candidateReturned.setId(new ObjectId().toString());
+
+        when(candidateService.create(ArgumentMatchers.any())).thenReturn(candidateReturned);
 
         mockMvc.perform(
-                post("/fit-model")
+                post("/candidate")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(fitModel)))
-                .andExpect(header().string("location", containsString("fit-model/" + fitModelReturned.getId())))
+                        .content(objectMapper.writeValueAsString(candidate)))
+                .andExpect(header().string("location", containsString("candidate/" + candidateReturned.getId())))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    public void shouldReturnStatusCode200AndFitModelListWhenGetFitModel() throws Exception {
-        List<FitModel> fitModelList = new ArrayList<>();
+    public void shouldReturnStatusCode200AndCandidateListWhenGetCandidate() throws Exception {
+        List<Candidate> candidateList = new ArrayList<>();
         String id = new ObjectId().toString();
-        fitModel.setId(id);
-        fitModelList.add(fitModel);
-        fitModelList.add(fitModel);
+        candidate.setId(id);
+        candidateList.add(candidate);
+        candidateList.add(candidate);
 
-        when(fitModelService.getAll()).thenReturn(fitModelList);
+        when(candidateService.getAll()).thenReturn(candidateList);
 
         MvcResult result = mockMvc.perform(
-                get("/fit-model")
+                get("/candidate")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
-        assertThat(content, not(is(new ObjectMapper().writeValueAsString(fitModelList))));
+        assertThat(content, not(is(new ObjectMapper().writeValueAsString(candidateList))));
         assertThat(content, containsString("\"id\":\"" + id + "\""));
         assertThat(content, containsString("\"name\":\"Maria dos Santos\""));
         assertThat(content, not(containsString("\"phoneNumber\":\"51999111111\"")));
     }
 
     @Test
-    public void shouldReturnStatusCode200AndFitModelInformationWhenGetFitModelWithId() throws Exception {
-        fitModel.setId(new ObjectId().toString());
+    public void shouldReturnStatusCode200AndCandidateInformationWhenGetCandidateWithId() throws Exception {
+        candidate.setId(new ObjectId().toString());
 
-        when(fitModelService.get(any())).thenReturn(fitModel);
+        when(candidateService.get(any())).thenReturn(candidate);
 
         MvcResult result = mockMvc.perform(
-                get("/fit-model/" + fitModel.getId())
+                get("/candidate/" + candidate.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
-        assertThat(content, is(objectMapper.writeValueAsString(fitModel)));
+        assertThat(content, is(objectMapper.writeValueAsString(candidate)));
     }
 
     @Test
-    public void shouldUpdateFitModel() throws Exception {
+    public void shouldUpdateCandidate() throws Exception {
         ObjectId id = new ObjectId();
-        fitModel.setId(id.toString());
+        candidate.setId(id.toString());
 
-        FitModel updatedFitModel = new FitModel();
+        Candidate updatedCandidate = new Candidate();
 
-        BeanUtils.copyProperties(fitModel, updatedFitModel);
-        updatedFitModel.setName("Ana Carolina");
-        updatedFitModel.setPhoneNumber("58993249582");
+        BeanUtils.copyProperties(candidate, updatedCandidate);
+        updatedCandidate.setName("Ana Carolina");
+        updatedCandidate.setPhoneNumber("58993249582");
 
-        when(fitModelService.update(any(), any())).thenReturn(updatedFitModel);
-        when(fitModelService.get(any())).thenReturn(fitModel);
+        when(candidateService.update(any(), any())).thenReturn(updatedCandidate);
+        when(candidateService.get(any())).thenReturn(candidate);
 
         MvcResult result = mockMvc.perform(
-                put("/fit-model/" + fitModel.getId())
+                put("/candidate/" + candidate.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatedFitModel)))
+                        .content(objectMapper.writeValueAsString(updatedCandidate)))
                 .andExpect(status().isOk()).andReturn();
 
         String content = result.getResponse().getContentAsString();
 
-        assertThat(content, containsString("\"id\":\"" + fitModel.getId() + "\""));
+        assertThat(content, containsString("\"id\":\"" + candidate.getId() + "\""));
         assertThat(content, containsString("\"name\":\"Ana Carolina\""));
         assertThat(content, containsString("\"phoneNumber\":\"58993249582\""));
 
-        verify(fitModelService, times(1)).get(any());
-        verify(fitModelService, times(1)).update(any(), any());
-        verifyNoMoreInteractions(fitModelService);
+        verify(candidateService, times(1)).get(any());
+        verify(candidateService, times(1)).update(any(), any());
+        verifyNoMoreInteractions(candidateService);
     }
 
     @Test
-    public void searchFitModelByName() throws Exception {
-        FitModel fitModel = new FitModel();
-        fitModel.setId("1");
-        fitModel.setName("Name");
+    public void searchCandidateByName() throws Exception {
+        Candidate candidate = new Candidate();
+        candidate.setId("1");
+        candidate.setName("Name");
 
-        Page<FitModel> fitModelPage = new PageImpl<>(Collections.singletonList(fitModel));
+        Page<Candidate> candidatePage = new PageImpl<>(Collections.singletonList(candidate));
 
-        when(fitModelService.search(any(), any())).thenReturn(fitModelPage);
+        when(candidateService.search(any(), any())).thenReturn(candidatePage);
 
         mockMvc.perform(
-                get("/fit-model/search").param("name", fitModel.getName())
+                get("/candidate/search").param("name", candidate.getName())
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
-                .andExpect(jsonPath("$.content[0].id", is(fitModel.getId())))
-                .andExpect(jsonPath("$.content[0].name", is(fitModel.getName())));
+                .andExpect(jsonPath("$.content[0].id", is(candidate.getId())))
+                .andExpect(jsonPath("$.content[0].name", is(candidate.getName())));
 
-        verify(fitModelService).search(any(), any());
+        verify(candidateService).search(any(), any());
     }
 
     @Test
-    public void shouldReturnFitModelPageWithList() throws Exception {
-        Page<FitModel> page = new PageImpl<>(Collections.singletonList(fitModel));
-        when(fitModelService.findAllPage(any())).thenReturn(page);
+    public void shouldReturnCandidatePageWithList() throws Exception {
+        Page<Candidate> page = new PageImpl<>(Collections.singletonList(candidate));
+        when(candidateService.findAllPage(any())).thenReturn(page);
 
         mockMvc.perform(
-                get("/fit-model/paginated").param("page", "1").param("size", "5")
+                get("/candidate/paginated").param("page", "1").param("size", "5")
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)));
 
-        verify(fitModelService).findAllPage(any());
+        verify(candidateService).findAllPage(any());
     }
 
-    public void populateValidFitModel() {
+    public void populateValidCandidate() {
         SocialInformation socialInformation = new SocialInformation();
         socialInformation.setEthnicity(Ethnicity.PARDO);
         socialInformation.setFamilyIncome(FamilyIncome.TWO_MINIMUM_WAGE);
@@ -190,52 +196,52 @@ public class FitModelControllerTest {
         socialInformation.setOccupation("Ocupacao");
         socialInformation.setOccupationMode(OccupationMode.AUTONOMOUS);
 
-        fitModel = new FitModel();
-        fitModel.setName("Maria dos Santos");
-        fitModel.setPhoneNumber("(51)999111111");
-        fitModel.setGenderExpression(GenderExpression.FEMALE);
-        fitModel.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "M", 42, 40));
-        fitModel.setBirthday(LocalDate.parse("2008-12-10"));
-        fitModel.setAddress("Avenida Ipiranga, 1963, Porto Alegre");
-        fitModel.setAvailability(Availability.AFTERNOON);
-        fitModel.setEducation(Education.INCOMPLETE_HIGH_SCHOOL);
-        fitModel.setGuardianName("Claudia dos Santos");
-        fitModel.setGuardianPhoneNumber("(51)999111111");
-        fitModel.setIdentifyAsLGBTQIA(true);
-        fitModel.setProjects("Nome do Projeto");
-        fitModel.setSocialInformation(socialInformation);
+        candidate = new Candidate();
+        candidate.setName("Maria dos Santos");
+        candidate.setPhoneNumber("(51)999111111");
+        candidate.setGenderExpression(GenderExpression.FEMALE);
+        candidate.setSizes(new Sizes(108.0, 87.0, 100.0, 160.0, "M", 42, 40));
+        candidate.setBirthday(LocalDate.parse("2008-12-10"));
+        candidate.setAddress("Avenida Ipiranga, 1963, Porto Alegre");
+        candidate.setAvailability(Availability.AFTERNOON);
+        candidate.setEducation(Education.INCOMPLETE_HIGH_SCHOOL);
+        candidate.setGuardianName("Claudia dos Santos");
+        candidate.setGuardianPhoneNumber("(51)999111111");
+        candidate.setIdentifyAsLGBTQIA(true);
+        candidate.setProjects("Nome do Projeto");
+        candidate.setSocialInformation(socialInformation);
     }
 
     @Test
     public void shouldDeleteCandidate() throws Exception {
         String id = "id";
 
-        doNothing().when(fitModelService).delete(id);
+        doNothing().when(candidateService).delete(id);
 
-        MockHttpServletRequestBuilder request = delete(String.format("/fit-model/%s", id));
+        MockHttpServletRequestBuilder request = delete(String.format("/candidate/%s", id));
 
         this.mockMvc
                 .perform(request)
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        verify(fitModelService).delete(id);
+        verify(candidateService).delete(id);
     }
 
     @Test
     public void shouldThrowExceptionWhenTryingToDeleteCandidateThatDoesNotExist() throws Exception {
         String id = "id";
 
-        doThrow(CandidateNotFoundException.class).when(fitModelService).delete(id);
+        doThrow(CandidateNotFoundException.class).when(candidateService).delete(id);
 
-        MockHttpServletRequestBuilder request = delete(String.format("/fit-model/%s", id));
+        MockHttpServletRequestBuilder request = delete(String.format("/candidate/%s", id));
 
         this.mockMvc
                 .perform(request)
                 .andDo(print())
                 .andExpect(status().isNotFound());
 
-        verify(fitModelService).delete(id);
+        verify(candidateService).delete(id);
     }
 }
 
