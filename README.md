@@ -1,4 +1,8 @@
 
+[![codecov](https://codecov.io/gh/hackathon-da-diversidade/agencia-compromisso/branch/master/graph/badge.svg)](https://codecov.io/gh/hackathon-da-diversidade/agencia-compromisso)
+[![hackathon-da-diversidade](https://circleci.com/gh/hackathon-da-diversidade/agencia-compromisso.svg?style=shield)](https://circleci.com/gh/hackathon-da-diversidade/agencia-compromisso)
+
+
 # Agência Compromisso
 
 Em parceria com a Lojas Renner, o [CEA](http://www.ceavilapinto.org/) (Centro de Educação Ambiental da Vila Pinto) começou a desenvolver um projeto para encontrar modelos de prova para suas criações dentro do bairro Bom Jesus. Para quem não é familiar com este termo, modelo de prova é a pessoa que experimenta peças-piloto antes da produção em larga escala. 
@@ -28,7 +32,7 @@ Após o evento, algumas pessoas seguiram trabalhando na iniciativa que tem como 
 
 Para rodar a aplicação você precisa:
 
-* [JDK 13](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html)
+* [JDK 14](https://www.oracle.com/java/technologies/javase-jdk14-downloads.html)
 * [Gradle](https://gradle.org/)
 
 ## Rodar aplicação
