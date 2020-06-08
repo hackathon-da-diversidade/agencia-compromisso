@@ -1,6 +1,7 @@
 package com.thoughtworks.agenciacompromisso.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.thoughtworks.agenciacompromisso.exceptions.CandidateNotFoundException;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.View;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
@@ -70,5 +71,11 @@ public class FitModelController {
         return fitModelService.findAllPage(pageable);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<Object> delete(@PathVariable String id) throws CandidateNotFoundException {
+        fitModelService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
 

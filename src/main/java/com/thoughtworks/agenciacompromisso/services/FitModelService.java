@@ -1,5 +1,6 @@
 package com.thoughtworks.agenciacompromisso.services;
 
+import com.thoughtworks.agenciacompromisso.exceptions.CandidateNotFoundException;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.repositories.FitModelRepository;
 import org.bson.types.ObjectId;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Service
 public class FitModelService {
-    private FitModelRepository fitModelRepository;
+    private final FitModelRepository fitModelRepository;
 
     public FitModelService(FitModelRepository fitModelRepository) {
         this.fitModelRepository = fitModelRepository;
@@ -40,5 +41,11 @@ public class FitModelService {
 
     public Page<FitModel> search(String name, Pageable pageable) {
         return fitModelRepository.findByName(name, pageable);
+    }
+
+    public void delete(String id) throws CandidateNotFoundException {
+        FitModel candidate = fitModelRepository.findById(id).orElseThrow(CandidateNotFoundException::new);
+
+        fitModelRepository.delete(candidate);
     }
 }

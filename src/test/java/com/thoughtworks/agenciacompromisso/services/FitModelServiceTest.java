@@ -1,5 +1,6 @@
 package com.thoughtworks.agenciacompromisso.services;
 
+import com.thoughtworks.agenciacompromisso.exceptions.CandidateNotFoundException;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
@@ -23,9 +24,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -148,5 +151,31 @@ public class FitModelServiceTest {
         verify(fitModelRepository).findByName(any(), any());
 
         assertThat(results, is(page));
+    }
+
+    @Test
+    public void shouldDeleteCandidate() {
+        String id = "id";
+
+        when(fitModelRepository.findById(id)).thenReturn(Optional.of(fitModel));
+        doNothing().when(fitModelRepository).delete(fitModel);
+
+        fitModelService.delete(id);
+
+        verify(fitModelRepository).findById(id);
+        verify(fitModelRepository).delete(fitModel);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToDeleteCandidateThatDoesNotExist() {
+        String id = "id";
+
+        when(fitModelRepository.findById(id)).thenReturn(Optional.empty());
+        doNothing().when(fitModelRepository).delete(fitModel);
+
+        assertThrows(CandidateNotFoundException.class, () -> fitModelService.delete(id));
+
+        verify(fitModelRepository).findById(id);
+        verify(fitModelRepository, never()).delete(fitModel);
     }
 }
