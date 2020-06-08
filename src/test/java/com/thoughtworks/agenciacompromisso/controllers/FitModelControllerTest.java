@@ -3,16 +3,15 @@ package com.thoughtworks.agenciacompromisso.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.thoughtworks.agenciacompromisso.exceptions.CandidateNotFoundException;
 import com.thoughtworks.agenciacompromisso.models.FitModel;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.SocialInformation;
 import com.thoughtworks.agenciacompromisso.models.enums.*;
 import com.thoughtworks.agenciacompromisso.services.FitModelService;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,9 +37,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(FitModelController.class)
 public class FitModelControllerTest {
 
@@ -59,11 +58,6 @@ public class FitModelControllerTest {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        reset(fitModelService);
     }
 
     @Test
@@ -210,6 +204,38 @@ public class FitModelControllerTest {
         fitModel.setIdentifyAsLGBTQIA(true);
         fitModel.setProjects("Nome do Projeto");
         fitModel.setSocialInformation(socialInformation);
+    }
+
+    @Test
+    public void shouldDeleteCandidate() throws Exception {
+        String id = "id";
+
+        doNothing().when(fitModelService).delete(id);
+
+        MockHttpServletRequestBuilder request = delete(String.format("/fit-model/%s", id));
+
+        this.mockMvc
+                .perform(request)
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        verify(fitModelService).delete(id);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToDeleteCandidateThatDoesNotExist() throws Exception {
+        String id = "id";
+
+        doThrow(CandidateNotFoundException.class).when(fitModelService).delete(id);
+
+        MockHttpServletRequestBuilder request = delete(String.format("/fit-model/%s", id));
+
+        this.mockMvc
+                .perform(request)
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(fitModelService).delete(id);
     }
 }
 
