@@ -38,8 +38,8 @@ public class IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private Candidate candidate;
 
+    private Candidate candidate;
     private CandidateBuilder candidateBuilder;
 
     @BeforeEach
@@ -109,7 +109,6 @@ public class IntegrationTest {
 
         assertThat(candidateRepository.findById(candidate.getId())).isNotEmpty();
 
-        System.out.println(mockMvc);
         MockHttpServletRequestBuilder request = delete(String.format("/candidate/%s", candidate.getId()));
 
         this.mockMvc
