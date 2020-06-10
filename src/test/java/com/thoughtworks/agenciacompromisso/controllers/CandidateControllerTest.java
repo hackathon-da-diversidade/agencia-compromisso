@@ -3,6 +3,7 @@ package com.thoughtworks.agenciacompromisso.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.thoughtworks.agenciacompromisso.exceptions.CandidateNotFoundException;
 import com.thoughtworks.agenciacompromisso.models.Candidate;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.SocialInformation;
@@ -24,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -211,5 +214,41 @@ public class CandidateControllerTest {
         candidate.setProjects("Nome do Projeto");
         candidate.setSocialInformation(socialInformation);
     }
+
+    @Test
+    public void shouldDeleteCandidate() throws Exception {
+        String id = "id";
+
+        doNothing().when(candidateService).delete(id);
+
+        MockHttpServletRequestBuilder request = delete(String.format("/candidate/%s", id));
+
+        this.mockMvc
+                .perform(request)
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        verify(candidateService).delete(id);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToDeleteCandidateThatDoesNotExist() throws Exception {
+        String id = "id";
+
+        doThrow(CandidateNotFoundException.class).when(candidateService).delete(id);
+
+        MockHttpServletRequestBuilder request = delete(String.format("/candidate/%s", id));
+
+        this.mockMvc
+                .perform(request)
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(candidateService).delete(id);
+    }
+
+
 }
+
+
 
