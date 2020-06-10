@@ -1,6 +1,6 @@
 package com.thoughtworks.agenciacompromisso.builders;
 
-import com.thoughtworks.agenciacompromisso.models.FitModel;
+import com.thoughtworks.agenciacompromisso.models.Candidate;
 import com.thoughtworks.agenciacompromisso.models.Sizes;
 import com.thoughtworks.agenciacompromisso.models.enums.GenderExpression;
 
@@ -31,8 +31,8 @@ public class CandidateBuilder {
         this.sizes = sizes;
     }
 
-    public FitModel build() {
-        FitModel candidate = new FitModel();
+    public Candidate build() {
+        Candidate candidate = new Candidate();
         candidate.setId(id);
         candidate.setName(name);
         candidate.setPhoneNumber(phoneNumber);
